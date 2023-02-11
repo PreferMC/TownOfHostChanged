@@ -3,6 +3,7 @@ using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
+using TownOfHost.Listener;
 using TownOfHost.Modules;
 using static TownOfHost.Translator;
 
@@ -45,6 +46,9 @@ namespace TownOfHost
                 AmongUsClient.Instance.KickPlayer(client.Id, true);
                 Logger.Info($"ブロック済みのプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました。", "BAN");
             }
+
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerJoin(__instance, client);
+
             BanManager.CheckBanPlayer(client);
             BanManager.CheckDenyNamePlayer(client);
             Main.playerVersion = new Dictionary<byte, PlayerVersion>();
@@ -58,6 +62,7 @@ namespace TownOfHost
         {
             //            Logger.info($"RealNames[{data.Character.PlayerId}]を削除");
             //            main.RealNames.Remove(data.Character.PlayerId);
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerLeft(__instance, data, reason);
             if (GameStates.IsInGame)
             {
                 if (data.Character.Is(CustomRoles.TimeThief))

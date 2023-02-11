@@ -1,3 +1,5 @@
+using InnerNet;
+
 namespace TownOfHost.Listener;
 
 public interface IListener
@@ -11,4 +13,8 @@ public interface IListener
     void OnPlayerSendChat(PlayerControl player, string text) { }
 
     bool OnOwnerSendChat(ChatController chat) { return true; }
+
+    void OnPlayerJoin(AmongUsClient auClient, ClientData client) { }
+
+    void OnPlayerLeft(AmongUsClient client, ClientData data, DisconnectReasons reason) { }
 }

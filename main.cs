@@ -9,6 +9,8 @@ using BepInEx.IL2CPP;
 using HarmonyLib;
 using TownOfHost.Command;
 using TownOfHost.Command.Impl;
+using TownOfHost.Listener;
+using TownOfHost.Listener.Impl;
 using TownOfHost.NewRole;
 using TownOfHost.NewRole.Roles;
 using UnhollowerRuntimeLib;
@@ -199,6 +201,9 @@ public class Main : BasePlugin
         // Register commands here
         new HelpCommand().RegisterCommand();
         new RoleCommand().RegisterCommand();
+
+        // Register listeners here
+        new PlayerJoinListener().RegisterListener();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
