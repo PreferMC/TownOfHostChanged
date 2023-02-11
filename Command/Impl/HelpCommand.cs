@@ -45,6 +45,5 @@ public class HelpCommand : Command
     }
 
     private static readonly string ContributorMessage =
-        "commandf1 —— 项目发起者" + "\n"
-        ;
+        "commandf1 —— 项目发起者" + "\n";
 }

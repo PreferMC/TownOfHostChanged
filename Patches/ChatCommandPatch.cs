@@ -60,7 +60,10 @@ class ChatCommands
             foreach (var command in CommandManager.GetCommands())
                 if (command.Name.ToLower().Equals(cmd.ToLower()) ||
                     CommandManager.IsArgsContainsString(cmd.ToLower(), command.Aliases))
+                {
                     command.OnExecute(PlayerControl.LocalPlayer, CommandManager.DeleteFirstArg(args));
+                    canceled = command.Canceled;
+                }
 
             Main.isChatCommand = true;
             switch (args[0])
