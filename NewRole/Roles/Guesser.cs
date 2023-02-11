@@ -19,7 +19,7 @@ public class Guesser : Role, IListener
 
     public bool OnOwnerSendChat(ChatController chat)
     {
-        var commandList = new[] { "/id", "/bt", "/gs", "/cc", "/guess"};
+        var commandList = new[] {"/bt", "/gs", "/cc", "/guess"};
         bool isTypeCommand = false;
         foreach (var s in commandList)
             if (chat.TextArea.text.ToLower().StartsWith(s)) isTypeCommand = true;
@@ -48,18 +48,6 @@ public class Guesser : Role, IListener
 
         switch (args[0])
         {
-            case "/id":
-                _canceled = true;
-                if (!GameStates.InGame)
-                {
-                    SendMessage("请在游戏开始后使用", player);
-                    return;
-                }
-
-                string toSend = "";
-                foreach (var playerControl in Main.AllAlivePlayerControls) toSend = player.Data.PlayerName + " —— " + playerControl.PlayerId + "\n";
-                SendMessage(toSend, player);
-                return;
             case "/bt":
             case "/gs":
             case "/cc":

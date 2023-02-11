@@ -202,6 +202,7 @@ public class Main : BasePlugin
         // Register commands here
         new HelpCommand().RegisterCommand();
         new RoleCommand().RegisterCommand();
+        new IDCommand().RegisterCommand();
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();
