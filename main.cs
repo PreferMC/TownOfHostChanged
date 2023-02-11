@@ -197,6 +197,7 @@ public class Main : BasePlugin
         new Swordsman().RegisterRoleWithListener();
         new Amnesiac().RegisterRoleWithListener();
         new Guesser().RegisterRoleWithListener();
+        new LegalMedicalExpert().RegisterRoleWithListener();
 
         // Register commands here
         new HelpCommand().RegisterCommand();
@@ -346,6 +347,7 @@ public enum CustomRoles
     Seer,
     CSchrodingerCat,//クルー陣営のシュレディンガーの猫
     Swordsman,
+    LegalMedicalExpert,
     //Neutral
     Arsonist,
     Egoist,

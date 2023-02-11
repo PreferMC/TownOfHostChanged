@@ -19,7 +19,7 @@ public class Swordsman : Role, IListener
         CurrentKillCooldown = 1;
         DisplayName = "侠客";
         Info = "行侠仗义！";
-        Description = "(船员阵营):\n你可以正义击杀任何人。";
+        Description = "(船员阵营):\n你可以正义击杀任何人，但是机会只有一次。";
     }
 
     public bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target)

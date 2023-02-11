@@ -14,7 +14,6 @@ public class Guesser : Role, IListener
         Color = "#ff6666";
         DisplayName = "赌怪";
         Info = "生命就是豪赌！";
-        Description = "你可以进行赌注，当然，错误的代价是致命的。";
         Group = TabGroup.Addons;
     }
 
@@ -51,6 +50,12 @@ public class Guesser : Role, IListener
         {
             case "/id":
                 _canceled = true;
+                if (!GameStates.InGame)
+                {
+                    SendMessage("请在游戏开始后使用", player);
+                    return;
+                }
+
                 string toSend = "";
                 foreach (var playerControl in Main.AllAlivePlayerControls) toSend = player.Data.PlayerName + " —— " + playerControl.PlayerId + "\n";
                 SendMessage(toSend, player);
