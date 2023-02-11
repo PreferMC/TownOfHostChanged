@@ -71,8 +71,9 @@ namespace TownOfHost
         };
         public static readonly string[] ratesZeroOne =
         {
-            "Rate0", /*"Rate10", "Rate20", "Rate30", "Rate40", "Rate50",
-            "Rate60", "Rate70", "Rate80", "Rate90", */"Rate100",
+            "ColoredOff", "ColoredOn"
+            //"Rate0", /*"Rate10", "Rate20", "Rate30", "Rate40", "Rate50",
+            //"Rate60", "Rate70", "Rate80", "Rate90", */"Rate100",
         };
 
         // 各役職の詳細設定
@@ -674,7 +675,8 @@ namespace TownOfHost
 
         public static void SetupRoleOptions(int id, TabGroup tab, CustomRoles role, CustomGameMode customGameMode = CustomGameMode.Standard)
         {
-            var spawnOption = StringOptionItem.Create(id, role.ToString(), ratesZeroOne, 0, tab, false).SetColor(Utils.GetRoleColor(role))
+            var spawnOption = StringOptionItem.Create(id, role.ToString(), ratesZeroOne, 0, tab, false)
+                .SetColor(Utils.GetRoleColor(role))
                 .SetHeader(true)
                 .SetGameMode(customGameMode) as StringOptionItem;
             var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false).SetParent(spawnOption)

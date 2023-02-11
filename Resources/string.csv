@@ -456,6 +456,9 @@ BomberRadius,自爆兵的爆炸范围（5x能炸半个食堂）
 NotifyGodAlive,如果神存活则在会议上通知所有人
 TriggerKill,击杀
 TriggerVent,通风管
+LighterTaskCompletedVision,完成任务后视野大小
+LighterTaskCompletedDisableLightOut,执灯人任务完成后无视关灯
+SpeedBoosterTaskTrigger,任务数量
 
 ## 躲猫猫设定
 HideAndSeekOptions,躲猫猫设置

@@ -114,11 +114,7 @@ namespace TownOfHost
 
             //タスクのリストを配列(Il2CppStructArray)に変換する
             taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
-            for (int i = 0; i < TasksList.Count; i++)
-            {
-                taskTypeIds[i] = TasksList[i];
-            }
-
+            for (int i = 0; i < TasksList.Count; i++) taskTypeIds[i] = TasksList[i];
         }
         public static void Shuffle<T>(Il2CppSystem.Collections.Generic.List<T> list)
         {
