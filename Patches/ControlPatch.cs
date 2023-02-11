@@ -35,7 +35,7 @@ namespace TownOfHost
             if (GetKeysDown(KeyCode.F5, KeyCode.T))
             {
                 Logger.Info("Reload Custom Translation File", "KeyCommand");
-                Translator.LoadLangs();
+                Translator.LoadLang();
                 Logger.SendInGame("Reloaded Custom Translation File");
             }
             //ログファイルのダンプ

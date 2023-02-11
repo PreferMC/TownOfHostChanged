@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using TownOfHost.NewRole;
 using UnityEngine;
+using static TownOfHost.Options;
 
 namespace TownOfHost
 {
@@ -271,7 +273,7 @@ namespace TownOfHost
         public static bool IsEvilWatcher = false;
         public static void SetWatcherTeam(float EvilWatcherRate)
         {
-            EvilWatcherRate = Options.EvilWatcherChance.GetFloat();
+            EvilWatcherRate = EvilWatcherChance.GetFloat();
             IsEvilWatcher = UnityEngine.Random.Range(1, 100) < EvilWatcherRate;
         }
         public static bool IsLoaded = false;
@@ -444,6 +446,9 @@ namespace TownOfHost
             // Add-Ons
             LastImpostor.SetupCustomOption();
             #endregion
+
+
+            foreach (var role in NewRole.RoleManager.GetRoles()) SetupRoleOptions(role.Id, role.Group, role.CustomRole);
 
             KillFlashDuration = FloatOptionItem.Create(90000, "KillFlashDuration", new(0.1f, 0.45f, 0.05f), 0.3f, TabGroup.MainSettings, false)
                 .SetHeader(true)

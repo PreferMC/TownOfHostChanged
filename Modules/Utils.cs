@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using TownOfHost.Modules;
+using TownOfHost.NewRole;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static TownOfHost.Translator;
@@ -164,7 +165,7 @@ namespace TownOfHost
         }
         public static string GetRoleName(CustomRoles role)
         {
-            return GetRoleString(Enum.GetName(typeof(CustomRoles), role));
+            return GetString(Enum.GetName(typeof(CustomRoles), role));
         }
         public static string GetDeathReason(PlayerState.DeathReason status)
         {
@@ -172,13 +173,13 @@ namespace TownOfHost
         }
         public static Color GetRoleColor(CustomRoles role)
         {
-            if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
+            if (!Main.RoleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
             ColorUtility.TryParseHtmlString(hexColor, out Color c);
             return c;
         }
         public static string GetRoleColorCode(CustomRoles role)
         {
-            if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
+            if (!Main.RoleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
             return hexColor;
         }
         public static (string, Color) GetRoleText(byte playerId)
@@ -195,7 +196,7 @@ namespace TownOfHost
                 switch (subRole)
                 {
                     case CustomRoles.LastImpostor:
-                        RoleText = GetRoleString("Last-") + RoleText;
+                        RoleText = GetString("Last-") + RoleText;
                         break;
                 }
             }
@@ -294,6 +295,14 @@ namespace TownOfHost
                     default:
                         if (role.IsImpostor() || role.IsKilledSchrodingerCat()) hasTasks = false;
                         break;
+                }
+
+                foreach (var newRole in NewRole.RoleManager.GetRoles())
+                {
+                    if (newRole.CustomRole == role)
+                    {
+                        hasTasks = newRole.HasTask;
+                    }
                 }
 
                 foreach (var subRole in States.SubRoles)

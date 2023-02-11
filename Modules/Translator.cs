@@ -6,23 +6,27 @@ using System.Text;
 using Csv;
 using HarmonyLib;
 
+/*
+ * Translator from Town Of Host Edited
+ * https://github.com/KARPED1EM/TownOfHostEdited/blob/TOHE/Patches/ControlPatch.cs
+ */
 namespace TownOfHost
 {
     public static class Translator
     {
-        public static Dictionary<string, Dictionary<int, string>> translateMaps;
-        public const string LANGUAGE_FOLDER_NAME = "Language";
+        public static Dictionary<string, Dictionary<int, string>>? TranslateMaps;
+        public const string LanguageFolderName = "Language";
         public static void Init()
         {
-            Logger.Info("Language Dictionary Initialize...", "Translator");
-            LoadLangs();
-            Logger.Info("Language Dictionary Initialize Finished", "Translator");
+            Logger.Info("加载语言文件...", "Translator");
+            LoadLang();
+            Logger.Info("加载语言文件成功", "Translator");
         }
-        public static void LoadLangs()
+        public static void LoadLang()
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream("TownOfHost.Resources.string.csv");
-            translateMaps = new Dictionary<string, Dictionary<int, string>>();
+            TranslateMaps = new Dictionary<string, Dictionary<int, string>>();
 
             var options = new CsvOptions()
             {
@@ -40,8 +44,8 @@ namespace TownOfHost
                         int id = int.Parse(line.Headers[i]);
                         dic[id] = line.Values[i].Replace("\\n", "\n").Replace("\\r", "\r");
                     }
-                    if (!translateMaps.TryAdd(line.Values[0], dic))
-                        Logger.Warn($"翻訳用CSVに重複があります。{line.Index}行目: \"{line.Values[0]}\"", "Translator");
+                    if (!TranslateMaps.TryAdd(line.Values[0], dic))
+                        Logger.Warn($"待翻译的 CSV 文件中存在重复项。{line.Index}行: \"{line.Values[0]}\"", "Translator");
                 }
                 catch (Exception ex)
                 {
@@ -50,22 +54,20 @@ namespace TownOfHost
             }
 
             // カスタム翻訳ファイルの読み込み
-            if (!Directory.Exists(LANGUAGE_FOLDER_NAME)) Directory.CreateDirectory(LANGUAGE_FOLDER_NAME);
+            if (!Directory.Exists(LanguageFolderName)) Directory.CreateDirectory(LanguageFolderName);
 
             // 翻訳テンプレートの作成
             CreateTemplateFile();
             foreach (var lang in Enum.GetValues(typeof(SupportedLangs)))
             {
-                if (File.Exists(@$"./{LANGUAGE_FOLDER_NAME}/{lang}.dat"))
+                if (File.Exists(@$"./{LanguageFolderName}/{lang}.dat"))
                     LoadCustomTranslation($"{lang}.dat", (SupportedLangs)lang);
             }
         }
 
         public static string GetString(string s, Dictionary<string, string> replacementDic = null)
         {
-            var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
-            if (Main.ForceJapanese.Value) langId = SupportedLangs.Japanese;
-            string str = GetString(s, langId);
+            string str = GetString(s);
             if (replacementDic != null)
                 foreach (var rd in replacementDic)
                 {
@@ -74,57 +76,57 @@ namespace TownOfHost
             return str;
         }
 
-        public static string GetString(string str, SupportedLangs langId)
+        public static string GetString(string str)
         {
             var res = $"<INVALID:{str}>";
-            if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "")) //strに該当する&無効なlangIdかresが空
+
+            foreach (var role in NewRole.RoleManager.GetRoles())
             {
-                res = $"*{dic[0]}";
+                if (str.ToLower().Equals(role.Name.ToLower()) || str.ToLower().Equals(role.DisplayName.ToLower()))
+                    // for get role name
+                    res = role.DisplayName;
+
+                if (str.ToLower().EndsWith("info") && str.ToLower().StartsWith(role.Name.ToLower()))
+                    // for get info
+                    res = role.Info;
+
+                if (str.ToLower().EndsWith("info" + "long") && str.ToLower().StartsWith(role.Name.ToLower()))
+                    // for get description
+                    res = role.Description;
             }
-            if (langId == SupportedLangs.Japanese)
+
+            try
             {
-                //このソースコ―ドを見た人へ。口外しないでもらえると嬉しいです...
-                //To anyone who has seen this source code. I would appreciate it if you would keep your mouth shut...
-                if (Main.IsChristmas)
+                if (TranslateMaps!.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)SupportedLangs.SChinese, out res) || res == "")) //匹配 str & 无效的 langId 或 res 为空
                 {
-                    res = str switch
-                    {
-                        "Lovers" => "リア充",
-                        "LoversInfo" => "爆ぜろ",
-                        _ => res
-                    };
+                    res = $"*{dic[0]}";
                 }
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal(str, "Translator");
+                Logger.Error(e.ToString(), "Translator");
             }
             return res;
         }
-        public static string GetRoleString(string str)
-        {
-            var CurrentLanguage = TranslationController.Instance.currentLanguage.languageID;
-            var lang = CurrentLanguage;
-            if (Main.ForceJapanese.Value && Main.JapaneseRoleName.Value)
-                lang = SupportedLangs.Japanese;
-            else if (CurrentLanguage == SupportedLangs.Japanese && !Main.JapaneseRoleName.Value)
-                lang = SupportedLangs.English;
 
-            return GetString(str, lang);
-        }
         public static void LoadCustomTranslation(string filename, SupportedLangs lang)
         {
-            string path = @$"./{LANGUAGE_FOLDER_NAME}/{filename}";
+            string path = @$"./{LanguageFolderName}/{filename}";
             if (File.Exists(path))
             {
                 Logger.Info($"カスタム翻訳ファイル「{filename}」を読み込み", "LoadCustomTranslation");
                 using StreamReader sr = new(path, Encoding.GetEncoding("UTF-8"));
                 string text;
                 string[] tmp = { };
-                while ((text = sr.ReadLine()) != null)
+                while ((text = sr.ReadLine() ?? string.Empty) != null)
                 {
                     tmp = text.Split(":");
                     if (tmp.Length > 1 && tmp[1] != "")
                     {
                         try
                         {
-                            translateMaps[tmp[0]][(int)lang] = tmp.Skip(1).Join(delimiter: ":").Replace("\\n", "\n").Replace("\\r", "\r");
+                            TranslateMaps[tmp[0]][(int)lang] = tmp.Skip(1).Join(delimiter: ":").Replace("\\n", "\n").Replace("\\r", "\r");
                         }
                         catch (KeyNotFoundException)
                         {
@@ -142,11 +144,9 @@ namespace TownOfHost
         private static void CreateTemplateFile()
         {
             var text = "";
-            foreach (var title in translateMaps) text += $"{title.Key}:\n";
-            File.WriteAllText(@$"./{LANGUAGE_FOLDER_NAME}/template.dat", text);
+            foreach (var title in TranslateMaps) text += $"{title.Key}:{GetString(title.Key)}\n";
+            File.WriteAllText(@$"./{LanguageFolderName}/template.dat", text);
             text = "";
-            foreach (var title in translateMaps) text += $"{title.Key}:{title.Value[0].Replace("\n", "\\n").Replace("\r", "\\r")}\n";
-            File.WriteAllText(@$"./{LANGUAGE_FOLDER_NAME}/template_English.dat", text);
         }
     }
 }

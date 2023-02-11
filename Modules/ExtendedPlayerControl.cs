@@ -6,6 +6,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using TownOfHost.Modules;
+using TownOfHost.NewRole;
 using UnityEngine;
 using static TownOfHost.Translator;
 
@@ -16,13 +17,10 @@ namespace TownOfHost
         public static void RpcSetCustomRole(this PlayerControl player, CustomRoles role)
         {
             if (role < CustomRoles.NotAssigned)
-            {
                 Main.PlayerStates[player.PlayerId].MainRole = role;
-            }
-            else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
-            {
+            else
                 Main.PlayerStates[player.PlayerId].SetSubRole(role);
-            }
+
             if (AmongUsClient.Instance.AmHost)
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, Hazel.SendOption.Reliable, -1);
@@ -164,16 +162,11 @@ namespace TownOfHost
         public static void SetKillCooldown(this PlayerControl player, float time = -1f)
         {
             if (player == null) return;
-            CustomRoles role = player.GetCustomRole();
             if (!player.CanUseKillButton()) return;
             if (time >= 0f)
-            {
                 Main.AllPlayerKillCooldown[player.PlayerId] = time * 2;
-            }
             else
-            {
                 Main.AllPlayerKillCooldown[player.PlayerId] *= 2;
-            }
             player.SyncSettings();
             player.RpcGuardAndKill();
             player.ResetKillCooldown();
@@ -360,6 +353,9 @@ namespace TownOfHost
         {
             if (!pc.IsAlive() || pc.Data.Role.Role == RoleTypes.GuardianAngel) return false;
 
+            foreach (var role in NewRole.RoleManager.GetRoles())
+                if (pc.GetCustomRole() == role.CustomRole) return role.CanKill;
+
             return pc.GetCustomRole() switch
             {
                 CustomRoles.FireWorks => FireWorks.CanUseKillButton(pc),
@@ -375,6 +371,12 @@ namespace TownOfHost
         public static bool CanUseImpostorVentButton(this PlayerControl pc)
         {
             if (!pc.IsAlive() || pc.Data.Role.Role == RoleTypes.GuardianAngel) return false;
+
+            foreach (var role in NewRole.RoleManager.GetRoles())
+            {
+                if (pc.GetCustomRole() != role.CustomRole) continue;
+                return role.CanUseVent;
+            }
 
             return pc.GetCustomRole() switch
             {
@@ -404,6 +406,18 @@ namespace TownOfHost
         public static void ResetKillCooldown(this PlayerControl player)
         {
             Main.AllPlayerKillCooldown[player.PlayerId] = Options.DefaultKillCooldown; //キルクールをデフォルトキルクールに変更
+
+            /*
+            foreach (var role in NewRole.RoleManager.GetRoles())
+            {
+                if (role.CustomRole != player.GetCustomRole()) continue;
+                //if (role.CanKill) player.SetKillCooldown(role.CurrentKillCooldown);
+                if (role.CanKill) Main.AllPlayerKillCooldown[player.PlayerId] = role.CurrentKillCooldown;
+            }
+            */
+            var newRole = player.GetCustomRole().GetRoleByCustomRole();
+            if (newRole is { CanKill: true }) Main.AllPlayerKillCooldown[player.PlayerId] = newRole.CurrentKillCooldown;
+
             switch (player.GetCustomRole())
             {
                 case CustomRoles.SerialKiller:

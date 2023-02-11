@@ -16,17 +16,19 @@ namespace TownOfHost
     {
         private static readonly string URL = "https://api.github.com/repos/tukasa0001/TownOfHost";
         public static bool hasUpdate = false;
-        public static bool isBroken = false;
         public static bool isChecked = false;
         public static Version latestVersion = null;
         public static string latestTitle = null;
         public static string downloadUrl = null;
         public static GenericPopup InfoPopup;
 
+        public static bool CanUpdate = false;
+
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
         [HarmonyPriority(2)]
         public static void Start_Prefix(MainMenuManager __instance)
         {
+            if (!CanUpdate) return;
             DeleteOldDLL();
             InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
             InfoPopup.name = "InfoPopup";
@@ -96,11 +98,9 @@ namespace TownOfHost
                     return false;
                 }
                 isChecked = true;
-                isBroken = false;
             }
             catch (Exception ex)
             {
-                isBroken = true;
                 Logger.Error($"リリースのチェックに失敗しました。\n{ex}", "CheckRelease", false);
                 return false;
             }

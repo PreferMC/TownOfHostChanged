@@ -8,8 +8,6 @@ namespace TownOfHost
     class OptionsMenuBehaviourStartPatch
     {
         private static Vector3? origin;
-        private static ToggleButtonBehaviour ForceJapanese;
-        private static ToggleButtonBehaviour JapaneseRoleName;
         public static float xOffset = 1.75f;
         public static float yOffset = -0.25f;
         private static void UpdateToggle(ToggleButtonBehaviour button, string text, bool on)
@@ -62,26 +60,6 @@ namespace TownOfHost
             __instance.StreamerModeButton.transform.localPosition = origin.Value + Vector3.right * 1.375f + Vector3.up * 1.071f;
             __instance.StreamerModeButton.transform.localScale = Vector3.one * 0.7f;
 
-            if (ForceJapanese == null || ForceJapanese?.gameObject == null)
-            {
-                ForceJapanese = CreateCustomToggle("Force Japanese: ", Main.ForceJapanese.Value, new Vector3(-0.375f, yOffset, 0), (UnityEngine.Events.UnityAction)ForceJapaneseButtonToggle, __instance);
-
-                void ForceJapaneseButtonToggle()
-                {
-                    Main.ForceJapanese.Value = !Main.ForceJapanese.Value;
-                    UpdateToggle(ForceJapanese, "Force Japanese: ", Main.ForceJapanese.Value);
-                }
-            }
-            if (JapaneseRoleName == null || JapaneseRoleName.gameObject == null)
-            {
-                JapaneseRoleName = CreateCustomToggle("Japanese Role Name: ", Main.JapaneseRoleName.Value, new Vector3(1.375f, yOffset, 0), (UnityEngine.Events.UnityAction)LangModeButtonToggle, __instance);
-
-                void LangModeButtonToggle()
-                {
-                    Main.JapaneseRoleName.Value = !Main.JapaneseRoleName.Value;
-                    UpdateToggle(JapaneseRoleName, "Japanese Role Name: ", Main.JapaneseRoleName.Value);
-                }
-            }
         }
     }
 }

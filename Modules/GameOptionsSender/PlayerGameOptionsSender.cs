@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using Il2CppSystem.Linq;
 using InnerNet;
+using TownOfHost.NewRole;
 using Mathf = UnityEngine.Mathf;
 
 namespace TownOfHost.Modules
@@ -163,6 +164,10 @@ namespace TownOfHost.Modules
                     AURoleOptions.EngineerInVentMaxTime = 0;
                     break;
             }
+
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+                if (player.GetCustomRole() == newRole.CustomRole) opt.SetVision(newRole.HasVision);
+
             if (Main.AllPlayerKillCooldown.ContainsKey(player.PlayerId))
             {
                 foreach (var kc in Main.AllPlayerKillCooldown)

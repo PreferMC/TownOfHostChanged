@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using TownOfHost.Listener;
 using UnityEngine;
 using static TownOfHost.Translator;
 
@@ -85,6 +86,10 @@ namespace TownOfHost
                 return false;
             }
             TimeSinceLastKill[killer.PlayerId] = 0f;
+
+            foreach (var listener in ListenerManager.GetListeners())
+                if (!listener.OnPlayerMurderPlayer(__instance, target))
+                    return false;
 
             killer.ResetKillCooldown();
 
@@ -387,6 +392,7 @@ namespace TownOfHost
             if (!AmongUsClient.Instance.AmHost) return true;
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerReportBody(__instance, target!);
             Main.ArsonistTimer.Clear();
             if (target == null) //ボタン
             {
@@ -466,7 +472,7 @@ namespace TownOfHost
 
             if (AmongUsClient.Instance.AmHost)
             {//実行クライアントがホストの場合のみ実行
-                if (GameStates.IsLobby && (ModUpdater.hasUpdate || ModUpdater.isBroken || !Main.AllowPublicRoom) && AmongUsClient.Instance.IsGamePublic)
+                if (GameStates.IsLobby && ((ModUpdater.hasUpdate && ModUpdater.CanUpdate) || !Main.AllowPublicRoom) && AmongUsClient.Instance.IsGamePublic)
                     AmongUsClient.Instance.ChangeGamePublic(false);
 
                 if (GameStates.IsInTask && ReportDeadBodyPatch.CanReport[__instance.PlayerId] && ReportDeadBodyPatch.WaitReport[__instance.PlayerId].Count > 0)

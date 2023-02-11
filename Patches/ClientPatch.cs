@@ -20,10 +20,9 @@ namespace TownOfHost
                 Logger.SendInGame(message);
                 return false;
             }
-            if (ModUpdater.isBroken || ModUpdater.hasUpdate)
+            if (ModUpdater.hasUpdate && ModUpdater.CanUpdate)
             {
                 var message = "";
-                if (ModUpdater.isBroken) message = GetString("ModBrokenMessage");
                 if (ModUpdater.hasUpdate) message = GetString("CanNotJoinPublicRoomNoLatest");
                 Logger.Info(message, "MakePublicPatch");
                 Logger.SendInGame(message);
@@ -37,7 +36,7 @@ namespace TownOfHost
     {
         public static void Postfix(MMOnlineManager __instance)
         {
-            if (!(ModUpdater.hasUpdate || ModUpdater.isBroken)) return;
+            if (!(ModUpdater.hasUpdate && ModUpdater.CanUpdate)) return;
             var obj = GameObject.Find("FindGameButton");
             if (obj)
             {
@@ -46,8 +45,7 @@ namespace TownOfHost
                 var textObj = Object.Instantiate<TMPro.TextMeshPro>(obj.transform.FindChild("Text_TMP").GetComponent<TMPro.TextMeshPro>());
                 textObj.transform.position = new Vector3(1f, -0.3f, 0);
                 textObj.name = "CanNotJoinPublic";
-                var message = ModUpdater.isBroken ? $"<size=2>{Utils.ColorString(Color.red, GetString("ModBrokenMessage"))}</size>"
-                    : $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
+                var message = $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
                 new LateTask(() => { textObj.text = message; }, 0.01f, "CanNotJoinPublic");
             }
         }
@@ -69,9 +67,11 @@ namespace TownOfHost
     {
         public static void Prefix(ref bool canOnline)
         {
+            // Deleted
+            /*
 #if DEBUG
             if (CultureInfo.CurrentCulture.Name != "ja-JP") canOnline = false;
-#endif
+#endif*/
         }
     }
     [HarmonyPatch(typeof(BanMenu), nameof(BanMenu.SetVisible))]
