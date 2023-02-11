@@ -7,6 +7,7 @@ public class HelpCommand : Command
         if (args.Length <= 0)
         {
             var helpMsg = "本房间安装了Town Of Host Changed模组"
+                          + "\n版本：" + Main.PluginVersion
                           + "\n命令列表："
                           + "\n/h contributor(con) —— 查看模组贡献者列表"
                           + "\n/role(r) <职业> —— 查看职业信息"

@@ -18,7 +18,7 @@ using UnityEngine;
 [assembly: AssemblyInformationalVersionAttribute(TownOfHost.Main.PluginVersion)]
 namespace TownOfHost;
 
-[BepInPlugin(PluginGuid, "Town Of Host", PluginVersion)]
+[BepInPlugin(PluginGuid, "Town Of Host Changed", PluginVersion)]
 [BepInIncompatibility("jp.ykundesu.supernewroles")]
 [BepInProcess("Among Us.exe")]
 public class Main : BasePlugin
