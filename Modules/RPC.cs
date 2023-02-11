@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using TownOfHost.Listener;
 using static TownOfHost.Translator;
 
 namespace TownOfHost
@@ -61,6 +62,7 @@ namespace TownOfHost
                 case RpcCalls.SendChat:
                     var text = subReader.ReadString();
                     Logger.Info($"{__instance.GetNameWithRole()}:{text}", "SendChat");
+                    foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerSendChat(__instance, text);
                     ChatCommands.OnReceiveChat(__instance, text);
                     break;
                 case RpcCalls.StartMeeting:

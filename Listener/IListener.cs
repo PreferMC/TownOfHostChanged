@@ -7,4 +7,8 @@ public interface IListener
     bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target) { return true; }
 
     void OnGameStarted(AmongUsClient client) { }
+
+    void OnPlayerSendChat(PlayerControl player, string text) { }
+
+    bool OnOwnerSendChat(ChatController chat) { return true; }
 }

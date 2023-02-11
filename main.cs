@@ -7,6 +7,8 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
+using TownOfHost.Command;
+using TownOfHost.Command.Impl;
 using TownOfHost.NewRole;
 using TownOfHost.NewRole.Roles;
 using UnhollowerRuntimeLib;
@@ -34,7 +36,7 @@ public class Main : BasePlugin
     public static readonly bool ShowDiscordButton = false;
     // 在右上角文字
     public static readonly string Text =
-        $"\r\n<color={ModColor}>国产Fork的第一个版本</color>"; // "\r\n<color=00ffff>国产Fork!</color>";
+        $"\r\n<color=#ffc0cb>随缘更新呢</color>";
     // Discordサーバーの招待リンク / Discord Server Invite URL (Default: https://discord.gg/W5ug6hXB9V)
     public static readonly string DiscordInviteUrl = "Null";
     // ==========
@@ -189,8 +191,14 @@ public class Main : BasePlugin
         BanManager.Init();
         TemplateManager.Init();
 
-        // Register Roles here
+        // Register roles here
         new Swordsman().RegisterRoleWithListener();
+        new Amnesiac().RegisterRoleWithListener();
+        new Guesser().RegisterRoleWithListener();
+
+        // Register commands here
+        new HelpCommand().RegisterCommand();
+        new RoleCommand().RegisterCommand();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
@@ -344,6 +352,7 @@ public enum CustomRoles
     Executioner,
     Jackal,
     JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
+    Amnesiac,
     //HideAndSeek
     HASFox,
     HASTroll,
@@ -353,6 +362,7 @@ public enum CustomRoles
     NotAssigned = 500,
     LastImpostor,
     Lovers,
+    Guesser
 }
 //WinData
 public enum CustomWinner

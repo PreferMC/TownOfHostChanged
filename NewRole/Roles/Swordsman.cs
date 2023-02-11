@@ -4,6 +4,9 @@ using TownOfHost.Listener;
 
 namespace TownOfHost.NewRole.Roles;
 
+/*
+ * 带刀船员职业示例
+ */
 public class Swordsman : Role, IListener
 {
     private static readonly List<byte> KilledOnes = new();

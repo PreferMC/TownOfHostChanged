@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using TownOfHost.NewRole;
 
 namespace TownOfHost
 {
@@ -6,6 +7,12 @@ namespace TownOfHost
     {
         public static bool IsImpostor(this CustomRoles role)
         {
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+            {
+                if (newRole.CustomRole != role) continue;
+                return newRole.Group == TabGroup.ImpostorRoles;
+            }
+
             return
                 role is CustomRoles.Impostor or
                 CustomRoles.Shapeshifter or
@@ -26,6 +33,12 @@ namespace TownOfHost
         }
         public static bool IsMadmate(this CustomRoles role)
         {
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+            {
+                if (newRole.CustomRole != role) continue;
+                return newRole.IsMadMate;
+            }
+
             return
                 role is CustomRoles.Madmate or
                 CustomRoles.SKMadmate or
@@ -36,6 +49,13 @@ namespace TownOfHost
         public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role.IsMadmate();
         public static bool IsNeutral(this CustomRoles role)
         {
+
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+            {
+                if (newRole.CustomRole != role) continue;
+                return newRole.Group == TabGroup.NeutralRoles;
+            }
+
             return
                 role is CustomRoles.Jester or
                 CustomRoles.Opportunist or

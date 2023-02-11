@@ -491,28 +491,6 @@ SabotageTimeControl,更改修理时限
 PolusReactorTimeLimit,波鲁斯抗震稳定器修理时限
 AirshipReactorTimeLimit,飞艇坠毁路线修理时限
 
-## 指令帮助
-CommandList,★ 主要指令:
-Command.now,→ 显示当前设置
-Command.roles,[职业名] → 显示职业介绍
-Command.myrole,→ 显示您的职业介绍
-Command.lastresult,→ 显示上局游戏结果
-Command.winner,→ 显示获胜玩家
-CommandOtherList,● 其它指令:
-Command.color,[颜色] → 修改您的颜色
-Command.rename,[名字] → 修改您的名字
-Command.quit,→ 我不想再遇到这个房
-CommandHostList,▲ 房主指令:
-Command.say,[内容] → 发送房主消息
-Command.mw,[秒] → 设置消息发送间隔
-Command.solvecover,→ 修复名字遮挡消息内容的问题
-Command.kill,[玩家ID] → 击杀指定玩家
-Command.exe,[玩家ID] → 放逐指定玩家
-Command.level,[等级] → 修改您的游戏等级
-Command.idlist,→ 显示玩家编号列表
-Command.dump,→ 将游戏运行日志输出到桌面
-CantUse.lastresult,不可以在游戏中使用/l命令
-IllegalColor,请输入正确的颜色
 DisableUseCommand,房主设置不允许使用该指令
 
 ## 信息

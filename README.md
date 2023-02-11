@@ -9,4 +9,6 @@
 
 ## 模组介绍
 本模组是由Town Of Host模组为基本二次开发而成的模组。<br>
-更多信息请前往[Wiki](https://github.com/PreferMC/TownOfHostChanged/wiki)查看
+更多信息请前往[Wiki](https://github.com/PreferMC/TownOfHostChanged/wiki)查看<br>
+## 模组优势
+本模组对TOH原版基础进行更改，修改了~~屎山~~**非必要**代码，而且对二次开发者非常友好<br>
