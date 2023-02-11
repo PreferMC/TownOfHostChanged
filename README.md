@@ -1,4 +1,4 @@
-![TownOfHost-Title](./Images/TownOfHost-Title.png)
+![Title](./Images/Title.png)
 
 
 
