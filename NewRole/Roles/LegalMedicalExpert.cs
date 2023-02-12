@@ -8,7 +8,7 @@ namespace TownOfHost.NewRole.Roles;
 public class LegalMedicalExpert : Role, IListener
 {
     private static readonly Dictionary<byte, byte> ShieldPlayers = new(); // 第一个是给盾的人，第二个是被给盾的人
-    private static readonly Dictionary<byte, long> DeadTime = new();
+    private static readonly Dictionary<byte, DateTime> DeadTime = new();
 
     public LegalMedicalExpert() : base(23333, CustomRoles.LegalMedicalExpert)
     {
@@ -33,7 +33,7 @@ public class LegalMedicalExpert : Role, IListener
             {
                 new LateTask(() =>
                 {
-                    Utils.SendMessage("看来死者死亡时间大约在在 " + (DateTime.Now.Ticks - pair.Value) / 8000 + " 秒之前" , reporter.PlayerId, "★ 法医信息 ★");
+                    Utils.SendMessage("看来死者死亡时间大约在在 " + (DateTime.Now - pair.Value).TotalSeconds + " 秒之前" , reporter.PlayerId, "★ 法医信息 ★");
                 }, 5.0f, "LegalMedicalExpert Task");
                 return;
             }
@@ -49,14 +49,19 @@ public class LegalMedicalExpert : Role, IListener
             {
                 ShieldPlayers.Add(killer.PlayerId, target.PlayerId);
                 killer.RpcGuardAndKill(target);
-                return false;
             }
 
             return false;
         }
 
         if (ShieldPlayers.ContainsValue(target.PlayerId))
-            foreach (var keyValuePair in ShieldPlayers) /* 这里写的有些多余了，懒得改了 */
+        {
+            killer.RpcGuardAndKill(target);
+            return false;
+        }
+
+            /*
+            foreach (var keyValuePair in ShieldPlayers)
                 if (keyValuePair.Value == target.PlayerId)
                 {
                     var player = Utils.GetPlayerById(keyValuePair.Key);
@@ -65,10 +70,10 @@ public class LegalMedicalExpert : Role, IListener
                         killer.RpcGuardAndKill(target);
                         return false;
                     }
-                }
+                }*/
 
         // 如果上面检测全都不成立，那么这个死者应该被加入进来
-        DeadTime.Add(target.PlayerId, DateTime.Now.Ticks);
+        DeadTime.Add(target.PlayerId, DateTime.Now);
         return true;
     }
 

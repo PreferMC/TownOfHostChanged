@@ -12,7 +12,7 @@ public class RoleCommand : Command
         if (args.Length <= 0)
         {
             HelpCommand.SendMessage(
-                "查看职业介绍/r <职业>" + "\n" + "例如: /r 失忆者"
+                "查看职业介绍/r (职业)" + "\n" + "例如: /r 失忆者"
                 , player);
             return;
         }

@@ -32,10 +32,15 @@ public class Swordsman : Role, IListener
             return false;
         }
 
-        if (killer.GetCustomRole() == CustomRoles.Swordsman && !KilledOnes.Contains(killer.PlayerId)) KilledOnes.Add(killer.PlayerId);
+        if (killer.GetCustomRole() == CustomRoles.Swordsman && !KilledOnes.Contains(killer.PlayerId))
+        {
+            KilledOnes.Add(killer.PlayerId);
+            killer.SetKillCooldown(255);
+            return true;
+        }
         /* 侠客只能出刀一次 */
 
-        if (target.GetCustomRole() == CustomRoles.SchrodingerCat && target.GetCustomRole() == CustomRoles.Swordsman)
+        if (target.GetCustomRole() == CustomRoles.SchrodingerCat && killer.GetCustomRole() == CustomRoles.Swordsman)
         {
             killer.RpcGuardAndKill(target);
             target.RpcSetCustomRole(CustomRoles.CSchrodingerCat);

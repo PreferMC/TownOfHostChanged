@@ -20,20 +20,20 @@ using UnityEngine;
 [assembly: AssemblyInformationalVersionAttribute(TownOfHost.Main.PluginVersion)]
 namespace TownOfHost;
 
-[BepInPlugin(PluginGuid, "Town Of Host Changed", PluginVersion)]
+[BepInPlugin(PluginGuid, "Town Of Host", PluginVersion)]
 [BepInIncompatibility("jp.ykundesu.supernewroles")]
 [BepInProcess("Among Us.exe")]
 public class Main : BasePlugin
 {
     // == プログラム設定 / Program Config ==
     // modの名前 / Mod Name (Default: Town Of Host)
-    public static readonly string ModName = "Town Of Host Changed";
+    public static readonly string ModName = "TOHC";
     // modの色 / Mod Color (Default: #00bfff)
     public static readonly string ModColor = "#ffd700";
     // 公開ルームを許可する / Allow Public Room (Default: true)
     public static readonly bool AllowPublicRoom = true;
     // フォークID / ForkId (Default: OriginalTOH)
-    public static readonly string ForkId = "TownOfHostChanged";
+    public static readonly string ForkId = "TOHC";
     // Discordボタンを表示するか / Show Discord Button (Default: true)
     public static readonly bool ShowDiscordButton = false;
     // 在右上角文字
@@ -54,10 +54,9 @@ public class Main : BasePlugin
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
 
     // ==========
-    //Sorry for many Japanese comments.
     public const string PluginGuid = "com.emptybottle.townofhost";
-    public const string PluginVersion = "1.0.0";
-    public Harmony Harmony { get; } = new Harmony(PluginGuid);
+    public const string PluginVersion = "1.0.1";
+    public Harmony Harmony { get; } = new(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
     public static bool hasArgumentException = false;
@@ -70,6 +69,8 @@ public class Main : BasePlugin
     public static ConfigEntry<string> HideName { get; private set; }
     public static ConfigEntry<string> HideColor { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
+
+    public static ConfigEntry<bool> DisableMOD { get; private set; }
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
     //Preset Name Options
@@ -148,6 +149,7 @@ public class Main : BasePlugin
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         // ForceJapanese = Config.Bind("Client Options", "Force Japanese", false);
         // JapaneseRoleName = Config.Bind("Client Options", "Japanese Role Name", true);
+        DisableMOD = Config.Bind("Client Options", "Disable Mod", false);
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
 
         Logger = BepInEx.Logging.Logger.CreateLogSource("TownOfHostChanged");
@@ -198,6 +200,7 @@ public class Main : BasePlugin
         new Amnesiac().RegisterRoleWithListener();
         new Guesser().RegisterRoleWithListener();
         new LegalMedicalExpert().RegisterRoleWithListener();
+        new Augur().RegisterRoleWithListener();
 
         // Register commands here
         new HelpCommand().RegisterCommand();
@@ -208,6 +211,7 @@ public class Main : BasePlugin
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();
+        new MeetingStartListener();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
@@ -351,6 +355,7 @@ public enum CustomRoles
     CSchrodingerCat,//クルー陣営のシュレディンガーの猫
     Swordsman,
     LegalMedicalExpert,
+    Augur,
     //Neutral
     Arsonist,
     Egoist,

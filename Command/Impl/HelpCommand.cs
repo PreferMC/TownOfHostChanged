@@ -2,18 +2,21 @@ namespace TownOfHost.Command.Impl;
 
 public class HelpCommand : Command
 {
+    public static readonly string HelpMessage = "本房间安装了Town Of Host Changed模组"
+                                                + "\n版本：" + Main.PluginVersion
+                                                + "\n模组QQ交流群：250164479"
+                                                + "\n命令列表："
+                                                + "\n/h contributor(con) —— 查看模组贡献者列表"
+                                                + "\n/role(r) <职业> —— 查看职业信息"
+                                                + "\n/id —— 查看所有玩家ID"
+                                                + "\n/n r —— 查看所有启用的职业"
+                                                + "\n/m —— 查看当前职业介绍";
+
     public override void OnExecute(PlayerControl player, string[] args)
     {
         if (args.Length <= 0)
         {
-            var helpMsg = "本房间安装了Town Of Host Changed模组"
-                          + "\n版本：" + Main.PluginVersion
-                          + "\n命令列表："
-                          + "\n/h contributor(con) —— 查看模组贡献者列表"
-                          + "\n/role(r) <职业> —— 查看职业信息"
-                          + "\n/id —— 查看所有玩家ID"
-                          + "\n/n r —— 查看所有启用的职业"
-                          + "\n/m —— 查看当前职业介绍";
+            var helpMsg = HelpMessage;
 
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 helpMsg = helpMsg

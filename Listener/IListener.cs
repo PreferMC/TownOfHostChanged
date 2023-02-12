@@ -17,4 +17,6 @@ public interface IListener
     void OnPlayerJoin(AmongUsClient auClient, ClientData client) { }
 
     void OnPlayerLeft(AmongUsClient client, ClientData data, DisconnectReasons reason) { }
+
+    void OnGameJoin(AmongUsClient client) { }
 }
