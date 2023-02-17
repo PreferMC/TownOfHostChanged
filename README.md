@@ -15,5 +15,3 @@
 ## 特别感谢
 * [KARPED1EM](https://github.com/KARPED1EM)
 <br>
-## 未来计划
-1. [x] 暂无
