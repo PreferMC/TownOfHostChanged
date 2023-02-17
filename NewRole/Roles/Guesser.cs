@@ -42,6 +42,11 @@ public class Guesser : Role, IListener
 
     private void SendMessage(string msg, PlayerControl player) => Utils.SendMessage(msg, player.PlayerId);
 
+
+    /*
+    * 这是一个屎山代码，你可以改掉他，但是不建议。
+    * 能跑起来为什么要改？
+    */
     public void OnPlayerSendChat(PlayerControl player, string text)
     {
         string[] args = text.ToLower().Split(' ');

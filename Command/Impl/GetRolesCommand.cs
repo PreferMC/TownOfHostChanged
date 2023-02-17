@@ -2,7 +2,7 @@ namespace TownOfHost.Command.Impl;
 
 public class GetRolesCommand : Command
 {
-    public GetRolesCommand() : base("getRoles", false)
+    public GetRolesCommand() : base("getRoles", true)
     {
         Canceled = true;
         Aliases = new[] { "gr" };
@@ -24,7 +24,21 @@ public class GetRolesCommand : Command
 
         string str = "";
         foreach (var target in Main.AllPlayerControls)
-            str = str + "(" + target.Data.ColorName + ") " + target.Data.PlayerName + (target.IsAlive() ? "(存活)" : "(死亡)") + " —— " + Translator.GetString(target.GetCustomRole().ToString()) + "\n";
+            str = str + target.Data.ColorName + target.Data.PlayerName + (target.IsAlive() ? "(存活)" : "(死亡)") + " —— " + Translator.GetString(target.GetCustomRole().ToString()) + FormatSubRoles(target) + "\n";
         HelpCommand.SendMessage(str, player);
+    }
+
+    private string FormatSubRoles(PlayerControl player)
+    {
+        var str = "";
+        int i = 0;
+        foreach (var subRole in player.GetCustomSubRoles())
+        {
+            i ++;
+            str = str + "[" + Translator.GetString(subRole.ToString()) + ((i == (player.GetCustomSubRoles().Count - 1)) ? "" : ", ");
+        }
+
+        str += "]";
+        return str;
     }
 }

@@ -40,10 +40,11 @@ namespace TownOfHost
         }
         static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
+            /*
             if (AntiBlackout.OverrideExiledPlayer)
             {
                 exiled = AntiBlackout_LastExiled;
-            }
+            }*/
 
             bool DecidedWinner = false;
             if (!AmongUsClient.Instance.AmHost) return; //ホスト以外はこれ以降の処理を実行しません
@@ -51,7 +52,7 @@ namespace TownOfHost
             if (exiled != null)
             {
                 //霊界用暗転バグ対処
-                if (!AntiBlackout.OverrideExiledPlayer && Main.ResetCamPlayerList.Contains(exiled.PlayerId))
+                if (/*!AntiBlackout.OverrideExiledPlayer && */Main.ResetCamPlayerList.Contains(exiled.PlayerId))
                     exiled.Object?.ResetPlayerCam(1f);
 
                 exiled.IsDead = true;
@@ -138,12 +139,13 @@ namespace TownOfHost
                 {
                     exiled = AntiBlackout_LastExiled;
                     AntiBlackout.SendGameData();
+                    /*
                     if (AntiBlackout.OverrideExiledPlayer && // 追放対象が上書きされる状態 (上書きされない状態なら実行不要)
                         exiled != null && //exiledがnullでない
                         exiled.Object != null) //exiled.Objectがnullでない
                     {
                         exiled.Object.RpcExileV2();
-                    }
+                    }*/
                 }, 0.5f, "Restore IsDead Task");
                 new LateTask(() =>
                 {

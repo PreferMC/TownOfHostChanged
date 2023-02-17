@@ -515,7 +515,6 @@ Message.DumpfileSaved,日志文件已成功保存到桌面上了，文件名为�
 
 ## 警告
 Warning.EgoistCannotWin,野心家无法获胜
-Warning.OverrideExiledPlayer,由于场上仅剩一名内鬼，投票结果无效
 Warning.InvalidRpc,{0} 被踢出，因其 RPC 无效，请确保没有 TOH 以外的模组。
 Warning.NoModHost,非TOH房
 

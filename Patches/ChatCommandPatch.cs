@@ -148,7 +148,10 @@ class ChatCommands
                     canceled = true;
                     var role = PlayerControl.LocalPlayer.GetCustomRole();
                     if (GameStates.IsInGame)
+                    {
                         HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
+                        foreach (var subRole in PlayerControl.LocalPlayer.GetCustomSubRoles()) HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, GetString(subRole.ToString()) + "\n" + GetString(subRole + "InfoLong"));
+                    }
                     break;
 
                 case "/t":

@@ -65,7 +65,7 @@ class OptionsMenuBehaviourStartPatch
 
         if (DisableMod == null || DisableMod.gameObject == null)
         {
-            CreateCustomToggle("热关闭MOD", false, new Vector3(-0.375f, 0),
+            CreateCustomToggle("热关闭MOD", false, new Vector3(-1.375f, 0),
                 (UnityEngine.Events.UnityAction)DisableMod, __instance);
 
             void DisableMod()

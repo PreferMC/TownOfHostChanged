@@ -33,12 +33,15 @@ namespace TownOfHost
                             VotedForId = pva.VotedFor
                         });
                         states = statesList.ToArray();
+                        /*
                         if (AntiBlackout.OverrideExiledPlayer)
                         {
                             __instance.RpcVotingComplete(states, null, true);
                             ExileControllerWrapUpPatch.AntiBlackout_LastExiled = voteTarget.Data;
-                        }
-                        else __instance.RpcVotingComplete(states, voteTarget.Data, false); //通常処理
+                        }*/
+                        // else __instance.RpcVotingComplete(states, voteTarget.Data, false); //通常処理
+
+                        __instance.RpcVotingComplete(states, voteTarget.Data, false);
 
                         if (CustomRoles.Witch.IsEnable())
                         {
@@ -181,13 +184,15 @@ namespace TownOfHost
                 if (exiledPlayer != null)
                     exiledPlayer.Object.SetRealKiller(null);
 
+                /*
                 //RPC
                 if (AntiBlackout.OverrideExiledPlayer)
                 {
                     __instance.RpcVotingComplete(states, null, true);
                     ExileControllerWrapUpPatch.AntiBlackout_LastExiled = exiledPlayer;
-                }
-                else __instance.RpcVotingComplete(states, exiledPlayer, tie); //通常処理
+                }*/
+                /*else */
+                __instance.RpcVotingComplete(states, exiledPlayer, tie); //通常処理
 
                 if (CustomRoles.Witch.IsEnable())
                 {
@@ -326,10 +331,11 @@ namespace TownOfHost
                 Utils.SendMessage(string.Format(GetString("Message.SyncButtonLeft"), Options.SyncedButtonCount.GetFloat() - Options.UsedButtonCount));
                 Logger.Info("緊急会議ボタンはあと" + (Options.SyncedButtonCount.GetFloat() - Options.UsedButtonCount) + "回使用可能です。", "SyncButtonMode");
             }
+            /*
             if (AntiBlackout.OverrideExiledPlayer)
             {
-                Utils.SendMessage(Translator.GetString("Warning.OverrideExiledPlayer"));
-            }
+                Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"));
+            }*/
             if (MeetingStates.FirstMeeting) TemplateManager.SendTemplate("OnFirstMeeting", noErr: true);
             TemplateManager.SendTemplate("OnMeeting", noErr: true);
 

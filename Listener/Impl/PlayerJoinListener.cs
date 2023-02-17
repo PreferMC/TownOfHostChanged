@@ -6,8 +6,11 @@ namespace TownOfHost.Listener.Impl;
 
 public class PlayerJoinListener : IListener
 {
-    public void OnPlayerJoin(AmongUsClient auClient, ClientData client)
+    public void OnCreatePlayer(AmongUsClient auClient, ClientData client)
     {
-        Utils.SendMessage(HelpCommand.HelpMessage, auClient.PlayerPrefab.PlayerId);
+        new LateTask(() =>
+        {
+            Utils.SendMessage(HelpCommand.HelpMessage, client.Character.PlayerId);
+        }, 3f, "PlayerJoinSendMessage");
     }
 }

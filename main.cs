@@ -201,6 +201,7 @@ public class Main : BasePlugin
         new Guesser().RegisterRoleWithListener();
         new LegalMedicalExpert().RegisterRoleWithListener();
         new Augur().RegisterRoleWithListener();
+        new Butcher().RegisterRoleWithListener();
 
         // Register commands here
         new HelpCommand().RegisterCommand();
@@ -377,6 +378,7 @@ public enum CustomRoles
     NotAssigned = 500,
     LastImpostor,
     Lovers,
+    Butcher,
     Guesser
 }
 //WinData

@@ -8,10 +8,12 @@ namespace TownOfHost
 {
     public static class AntiBlackout
     {
-        ///<summary>
-        ///追放処理を上書きするかどうか
-        ///</summary>
-        public static bool OverrideExiledPlayer => IsRequired && (IsSingleImpostor || Diff_CrewImp == 1);
+        //<summary>
+        //追放処理を上書きするかどうか
+        //</summary>
+        //public static bool OverrideExiledPlayer => IsRequired && (IsSingleImpostor || Diff_CrewImp == 1);
+
+
         ///<summary>
         ///インポスターが一人しか存在しない設定かどうか
         ///</summary>

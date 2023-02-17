@@ -95,6 +95,11 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
         {
+            foreach (var listener in ListenerManager.GetListeners())
+            {
+                listener.OnCreatePlayer(__instance, client);
+            }
+
             if (AmongUsClient.Instance.AmHost)
             {
                 new LateTask(() =>

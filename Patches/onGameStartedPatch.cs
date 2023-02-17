@@ -605,9 +605,24 @@ class SelectRolesPatch
     private static void SetupSubRoles(Role subRole, int rawCount = -1)
     {
         var allPlayers = new List<PlayerControl>();
+
         foreach (var player in Main.AllPlayerControls)
         {
             if (player.Is(CustomRoles.GM)) continue;
+
+            TabGroup? group = null;
+
+            if (player.GetCustomRole().IsImpostor())
+                group = TabGroup.ImpostorRoles;
+            if (player.GetCustomRole().IsNeutral())
+                group = TabGroup.NeutralRoles;
+            if (player.GetCustomRole().IsCrewmate())
+                group = TabGroup.CrewmateRoles;
+
+            if (group == null) continue;
+
+            if (!subRole.SubRoleCanJoinGroups.Contains((TabGroup) group)) continue; // 不在指定范围内不能够获得该副职业
+
             allPlayers.Add(player);
         }
         var role = subRole.CustomRole;
