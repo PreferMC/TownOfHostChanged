@@ -2,6 +2,10 @@ using TownOfHost.Listener;
 
 namespace TownOfHost.NewRole.Roles;
 
+/*
+ * 职业想法来自于
+ * 2287967389(QQ)
+ */
 public class Butcher : Role, IListener
 {
     public Butcher() : base(5525, CustomRoles.Butcher)

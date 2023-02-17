@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using TownOfHost.Listener;
+using TownOfHost.NewRole;
 using UnityEngine;
 using static TownOfHost.Translator;
 

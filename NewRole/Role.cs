@@ -22,7 +22,7 @@ public class Role
     public bool CanSabotage { get; set; } // 是否能够破坏
     public bool CanUseAbility { get; set; } // 是否能够使用能力
     public bool HasVision { get; set; } // 是否拥有内鬼视野
-    public bool IsMadMate { get; set; } // 是否为叛徒(尚未开发完成，请期待后续)
+    public bool IsMadMate { get; set; } // 是否为叛徒(理论上已经开发完成)
     public List<TabGroup> SubRoleCanJoinGroups { get; } // 副职业可以被赋予职业的阵营
 
     public Role(int id, CustomRoles role)
