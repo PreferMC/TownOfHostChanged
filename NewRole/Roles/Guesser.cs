@@ -103,7 +103,8 @@ public class Guesser : Role, IListener
 
                 if (target.GetCustomRole() == typeRole)
                 {
-                    player.RpcMurderPlayer(target);
+                    // player.RpcMurderPlayer(target);
+                    target.RpcMurderPlayer(target);
                     Utils.SendMessage(target.Data.PlayerName + " 在赌局中失利了！");
                 }
                 else

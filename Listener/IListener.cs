@@ -26,4 +26,8 @@ public interface IListener
     void OnGameJoin(AmongUsClient client) { }
 
     void OnCreatePlayer(AmongUsClient auClient, ClientData client) { }
+
+    void OnPlayerFixedUpdate(PlayerControl player) { }
+
+    // void OnMeetingHudStart(MeetingHud meetingHud) { }
 }

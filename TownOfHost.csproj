@@ -3,7 +3,7 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <Description>Town Of Host</Description>
-    <Authors>tukasa0001(EmptyBottle), integral0131</Authors>
+    <Authors>tukasa0001(EmptyBottle), integral0131, commandf1</Authors>
     <langVersion>preview</langVersion>
     <Nullable>enable</Nullable>
     <TargetFramework>netstandard2.1</TargetFramework>

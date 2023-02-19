@@ -32,7 +32,7 @@ namespace TownOfHost
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
-        public static Dictionary<byte, float> TimeSinceLastKill = new();
+        public static readonly Dictionary<byte, float> TimeSinceLastKill = new();
         public static void Update()
         {
             for (byte i = 0; i < 15; i++)
@@ -78,14 +78,14 @@ namespace TownOfHost
                 return false;
             }
 
-            float minTime = Mathf.Max(0.02f, AmongUsClient.Instance.Ping / 1000f * 6f); //※AmongUsClient.Instance.Pingの値はミリ秒(ms)なので÷1000
+            //float minTime = Mathf.Max(0.02f, AmongUsClient.Instance.Ping / 1000f * 6f); //※AmongUsClient.Instance.Pingの値はミリ秒(ms)なので÷1000
             //TimeSinceLastKillに値が保存されていない || 保存されている時間がminTime以上 => キルを許可
             //↓許可されない場合
-            if (TimeSinceLastKill.TryGetValue(killer.PlayerId, out var time) && time < minTime)
-            {
-                Logger.Info("前回のキルからの時間が早すぎるため、キルをブロックしました。", "CheckMurder");
-                return false;
-            }
+            //if (TimeSinceLastKill.TryGetValue(killer.PlayerId, out var time) && time < minTime)
+            //{
+                //Logger.Info("前回のキルからの時間が早すぎるため、キルをブロックしました。", "CheckMurder");
+                //return false;
+            //}
             TimeSinceLastKill[killer.PlayerId] = 0f;
 
             foreach (var listener in ListenerManager.GetListeners())
@@ -101,12 +101,14 @@ namespace TownOfHost
                 return false;
             }
 
+            /*
             //キル可能判定
             if (killer.PlayerId != target.PlayerId && !killer.CanUseKillButton())
             {
                 Logger.Info(killer.GetNameWithRole() + "はKillできないので、キルはキャンセルされました。", "CheckMurder");
                 return false;
             }
+            */
 
             //キルされた時の特殊判定
             switch (target.GetCustomRole())
@@ -468,6 +470,8 @@ namespace TownOfHost
     {
         public static void Postfix(PlayerControl __instance)
         {
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerFixedUpdate(__instance);
+
             if (!GameStates.IsModHost) return;
             var player = __instance;
 
@@ -776,22 +780,16 @@ namespace TownOfHost
 
                     if (canFindSnitchRole && target.Is(CustomRoles.Snitch) && target.GetPlayerTaskState().DoExpose //targetがタスクが終わりそうなSnitch
                     )
-                    {
                         Mark += $"<color={Utils.GetRoleColorCode(CustomRoles.Snitch)}>★</color>"; //Snitch警告をつける
-                    }
                     if (seer.Is(CustomRoles.Arsonist))
                     {
                         if (seer.IsDousedPlayer(target))
-                        {
                             Mark += $"<color={Utils.GetRoleColorCode(CustomRoles.Arsonist)}>▲</color>";
-                        }
                         else if (
                             Main.currentDousingTarget != 255 &&
                             Main.currentDousingTarget == target.PlayerId
                         )
-                        {
                             Mark += $"<color={Utils.GetRoleColorCode(CustomRoles.Arsonist)}>△</color>";
-                        }
                     }
                     Mark += Executioner.TargetMark(seer, target);
                     if (seer.Is(CustomRoles.Puppeteer))
@@ -895,7 +893,6 @@ namespace TownOfHost
                         //名前が2行になると役職テキストを上にずらす必要がある
                         RoleText.transform.SetLocalY(0.35f);
                         target.cosmetics.nameText.text += "\r\n" + Suffix;
-
                     }
                     else
                     {

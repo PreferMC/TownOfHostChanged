@@ -136,9 +136,7 @@ namespace TownOfHost
                 }
             }
             else
-            {
                 Logger.Error($"カスタム翻訳ファイル「{filename}」が見つかりませんでした", "LoadCustomTranslation");
-            }
         }
 
         private static void CreateTemplateFile()
@@ -146,7 +144,6 @@ namespace TownOfHost
             var text = "";
             foreach (var title in TranslateMaps) text += $"{title.Key}:{GetString(title.Key)}\n";
             File.WriteAllText(@$"./{LanguageFolderName}/template.dat", text);
-            text = "";
         }
     }
 }

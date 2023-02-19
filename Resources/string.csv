@@ -130,7 +130,6 @@ DoctorInfo,调查他人死因
 TrapperInfo,大奖小奖，能记住就是好奖
 DictatorInfo,请您不要随意自杀
 SeerInfo,你能感知到有人寄了
-UndercoverInfo,碟中谍了属于是
 LighterInfo,嘿！你在发光诶！
 BaitInfo,诱骗敌人，让敌人落入你的陷阱
 
@@ -507,7 +506,6 @@ Message.SyncButtonLeft,剩余紧急会议次数: {0}次，少拍桌多做事哦~
 Message.Executed,{0}被房主处决了，请不要干坏事哦~
 Message.HideGameSettings,游戏设置被房主隐藏
 Message.NowOverrideText,请房主在游戏根目录的 .\Language\SChinese.dat 文件中修改这段文本\n如果您不需要此功能或希望显示普通的/n消息\n请在设置里关掉“显示自定义的/n消息”
-Message.AnnounceUsingTOH,本房间使用TownOfHostEdited mod v{0}。\n未安装MOD也可以直接玩\n请前往本mod的Github页面来获取详细的职业信息。
 Message.NoDescription,无描述
 Message.KickedByDenyName,{0} 被踢出，因其昵称违规 {1}
 Message.BanedByBanList,{0} 已被封禁，老相识了
@@ -543,7 +541,6 @@ MessageFromTheHost,【 ★ 房主消息 ★ 】
 DetectiveNoticeTitle,【 ★ 侦探线索 ★ 】
 GuessKillTitle,【 ★ 赌场事件 ★ 】
 CyberStarNewsTitle,【 ★ 紧急新闻 ★ 】
-GodAliveTitle,【 ★ 神的共鸣 ★ 】
 TabGroup.MainSettings,主要设置
 TabGroup.CrewmateRoles,船员阵营职业
 TabGroup.NeutralRoles,独立阵营职业

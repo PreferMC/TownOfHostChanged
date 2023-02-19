@@ -25,7 +25,17 @@ public class Amnesiac : Role, IListener
 
         new LateTask(() =>
         {
-            reporter.RpcSetRole(target.GetCustomRole().IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
+            var newRole = target.GetCustomRole().GetRoleByCustomRole();
+            if (newRole != null)
+                if (!newRole.CanUseAbility)
+                    reporter.RpcSetRole(newRole.CanKill
+                        ? RoleTypes.Impostor : RoleTypes.Crewmate);
+                else
+                    reporter.RpcSetRole(newRole.CanUseAbility
+                        ? RoleTypes.Shapeshifter : newRole.CanKill
+                            ? RoleTypes.Impostor : RoleTypes.Crewmate);
+            else
+                reporter.RpcSetRole(target.GetCustomRole().IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
             reporter.RpcSetCustomRole(target.GetCustomRole());
         }, 2, "Amnesiac Task");
     }

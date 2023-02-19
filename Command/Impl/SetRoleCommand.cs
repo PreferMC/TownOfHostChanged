@@ -26,7 +26,7 @@ public class SetRoleCommand : Command
 
         if (args.Length <= 0)
         {
-            HelpCommand.SendMessage("语法：/setRole <职业> [玩家ID]", player);
+            HelpCommand.SendMessage("语法：/setRole (职业) [玩家ID]", player);
             return;
         }
 

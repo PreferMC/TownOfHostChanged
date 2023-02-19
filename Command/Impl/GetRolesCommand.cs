@@ -24,18 +24,18 @@ public class GetRolesCommand : Command
 
         string str = "";
         foreach (var target in Main.AllPlayerControls)
-            str = str + target.Data.ColorName + target.Data.PlayerName + (target.IsAlive() ? "(存活)" : "(死亡)") + " —— " + Translator.GetString(target.GetCustomRole().ToString()) + FormatSubRoles(target) + "\n";
+            str = str + target.Data.ColorName + target.Data.PlayerName + (target.IsAlive() ? "(存活)" : "(死亡)") + " —— " + Translator.GetString(target.GetCustomRole().ToString()) + (target.GetCustomSubRoles().Count <= 0 ? "" : FormatSubRoles(target))  + "\n";
         HelpCommand.SendMessage(str, player);
     }
 
     private string FormatSubRoles(PlayerControl player)
     {
-        var str = "";
+        var str = "[";
         int i = 0;
         foreach (var subRole in player.GetCustomSubRoles())
         {
             i ++;
-            str = str + "[" + Translator.GetString(subRole.ToString()) + ((i == (player.GetCustomSubRoles().Count - 1)) ? "" : ", ");
+            str = str + Translator.GetString(subRole.ToString()) + ((i == (player.GetCustomSubRoles().Count - 1) || player.GetCustomSubRoles().Count == 1) ? "" : ", ");
         }
 
         str += "]";

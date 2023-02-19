@@ -1,6 +1,8 @@
+using System;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace TownOfHost;
 
@@ -20,7 +22,7 @@ class OptionsMenuBehaviourStartPatch
         button.Text.text = $"{text}{(on ? "On" : "Off")}";
         if (button.Rollover) button.Rollover.ChangeOutColor(color);
     }
-    public static ToggleButtonBehaviour CreateCustomToggle(string text, bool on, Vector3 offset, UnityEngine.Events.UnityAction onClick, OptionsMenuBehaviour __instance)
+    public static ToggleButtonBehaviour CreateCustomToggle(string text, bool on, Vector3 offset, Action onClick, OptionsMenuBehaviour __instance)
     {
         if (__instance.CensorChatButton != null)
         {
@@ -64,15 +66,11 @@ class OptionsMenuBehaviourStartPatch
         __instance.StreamerModeButton.transform.localScale = Vector3.one * 0.7f;
 
         if (DisableMod == null || DisableMod.gameObject == null)
-        {
-            CreateCustomToggle("热关闭MOD", false, new Vector3(-1.375f, 0),
-                (UnityEngine.Events.UnityAction)DisableMod, __instance);
-
-            void DisableMod()
-            {
-                Harmony.UnpatchAll();
-                Main.Instance.Unload();
-            }
-        }
+            CreateCustomToggle("热关闭MOD: ", false, new Vector3(1.375f, yOffset, 0),
+                () =>
+                {
+                    Harmony.UnpatchAll();
+                    Main.Instance.Unload();
+                }, __instance);
     }
 }

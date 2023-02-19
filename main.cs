@@ -55,7 +55,7 @@ public class Main : BasePlugin
 
     // ==========
     public const string PluginGuid = "com.emptybottle.townofhost";
-    public const string PluginVersion = "1.0.1";
+    public const string PluginVersion = "1.0.2";
     public Harmony Harmony { get; } = new(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -202,6 +202,8 @@ public class Main : BasePlugin
         new LegalMedicalExpert().RegisterRoleWithListener();
         new Augur().RegisterRoleWithListener();
         new Butcher().RegisterRoleWithListener();
+        // new Undercover().RegisterRoleWithListener();
+        new Spy().RegisterRoleWithListener();
 
         // Register commands here
         new HelpCommand().RegisterCommand();
@@ -212,7 +214,7 @@ public class Main : BasePlugin
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();
-        new MeetingStartListener();
+        new MeetingStartListener().RegisterListener();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
@@ -357,6 +359,8 @@ public enum CustomRoles
     Swordsman,
     LegalMedicalExpert,
     Augur,
+    // Undercover,
+    Spy,
     //Neutral
     Arsonist,
     Egoist,

@@ -150,7 +150,7 @@ class ChatCommands
                     if (GameStates.IsInGame)
                     {
                         HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
-                        foreach (var subRole in PlayerControl.LocalPlayer.GetCustomSubRoles()) HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, GetString(subRole.ToString()) + "\n" + GetString(subRole + "InfoLong"));
+                        foreach (var subRole in PlayerControl.LocalPlayer.GetCustomSubRoles()) Utils.SendMessage(GetString(subRole.ToString()) + "\n" + GetString(subRole + "InfoLong"), PlayerControl.LocalPlayer.PlayerId);
                     }
                     break;
 
@@ -349,16 +349,16 @@ class ChatCommands
             case "/myrole":
                 var role = player.GetCustomRole();
                 if (GameStates.IsInGame)
+                {
                     Utils.SendMessage(GetString(role.ToString()) + player.GetRoleInfo(true), player.PlayerId);
+                    foreach (var subRole in player.GetCustomSubRoles()) Utils.SendMessage(GetString(subRole.ToString()) + "\n" + GetString(subRole + "InfoLong"), player.PlayerId);
+                }
                 break;
 
             case "/t":
             case "/template":
                 if (args.Length > 1) TemplateManager.SendTemplate(args[1], player.PlayerId);
                 else Utils.SendMessage($"{GetString("ForExample")}:\n{args[0]} test", player.PlayerId);
-                break;
-
-            default:
                 break;
         }
     }

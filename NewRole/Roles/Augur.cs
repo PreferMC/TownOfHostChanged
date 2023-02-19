@@ -15,7 +15,7 @@ public class Augur : Role, IListener
         Group = TabGroup.CrewmateRoles;
         BaseRole = RoleTypes.Impostor;
         CanKill = true;
-        CurrentKillCooldown = 80f;
+        CurrentKillCooldown = 60f;
         DisplayName = "占卜师";
         Description = "(船员阵营):\n你可以通过出刀来获取被刀者职业。";
         Info = "你将会倒大霉！";
