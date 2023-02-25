@@ -55,7 +55,6 @@ Doctor,医生
 Trapper,陷阱师
 Dictator,独裁者
 Seer,灵媒
-Detective,侦探
 Lighter,执灯人
 
 # 中立阵营
@@ -172,6 +171,7 @@ MafiaInfoLong,(内鬼阵营):\n黑手党在游戏中有其他内鬼存活时不�
 PuppeteerInfoLong,(内鬼阵营):\n傀儡师的操控对象会击杀其遇到的下一个船员。若后者在接触的同时死亡，则前者死亡。傀儡师不可以正常击杀。请注意，摆烂人不会替你办事，操控摆烂人只会浪费你的时间。
 TimeThiefInfoLong,(内鬼阵营):\n蚀时者每击杀一个人，会议时间就将减少一定时间。如果蚀时者死亡，会议时间会恢复正常。
 SniperInfoLong,(内鬼阵营):\n狙击手拥有远距离射杀的能力。方法为：进入变形到解除变形的位置连成一条线，这条线包括这条线的射线上距离最近的玩家会被狙杀。狙击手在子弹用完后可以进行正常击杀。
+EvilTrackerInfoLong,(内鬼阵营):\n邪恶追踪者可以追踪其他内鬼以及其所变形的玩家。玩家名称下面的箭头代表着目标的方向。当内鬼队友杀人时，邪恶追踪者将会看到击杀闪烁提示。
 
 # 叛徒系
 MadmateInfoLong,(内鬼阵营):\n叛徒伪装成船员来帮助内鬼阵营，但是他们并不知道谁是内鬼。叛徒不可以进行击杀或者破坏，可以跳管道且没有任务。
@@ -438,7 +438,6 @@ NEareRed,邪恶中立显示为红色
 CrewKillingRed,带刀船员显示为红色
 PsychicCanSeeNum,可以看到几个红名
 PsychicFresh,每次会议刷新红名
-DetectiveCanknowKiller,侦探可以知道凶手的职业
 ParanoiaVentCooldown,使用通风管冷却时长
 ParanoiaNumOfUseButton,可以使用通风管次数
 EveryOneKnowSuperStar,所有人知道谁是明星
@@ -538,7 +537,6 @@ ERR-001-000-3,在主目录出现重复密钥
 ## 其它
 DefaultSystemMessageTitle,【 ★ 系统消息 ★ 】
 MessageFromTheHost,【 ★ 房主消息 ★ 】
-DetectiveNoticeTitle,【 ★ 侦探线索 ★ 】
 GuessKillTitle,【 ★ 赌场事件 ★ 】
 CyberStarNewsTitle,【 ★ 紧急新闻 ★ 】
 TabGroup.MainSettings,主要设置

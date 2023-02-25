@@ -29,5 +29,5 @@ public interface IListener
 
     void OnPlayerFixedUpdate(PlayerControl player) { }
 
-    // void OnMeetingHudStart(MeetingHud meetingHud) { }
+    void OnOptionHolderRegister() { }
 }

@@ -416,7 +416,7 @@ namespace TownOfHost
             }
             */
             var newRole = player.GetCustomRole().GetRoleByCustomRole();
-            if (newRole is { CanKill: true }) Main.AllPlayerKillCooldown[player.PlayerId] = newRole.CurrentKillCooldown;
+            if (newRole is { CanKill: true }) Main.AllPlayerKillCooldown[player.PlayerId] = newRole.GetCurrentKillCooldown();
 
             switch (player.GetCustomRole())
             {

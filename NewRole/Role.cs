@@ -52,4 +52,19 @@ public class Role
         Description = Translator.GetString(Name + "LongInfo");
         Info = Translator.GetString(Name + "Info");
     }
+
+    /*
+     * 对于随时可以变的量
+     */
+    public virtual float GetCurrentKillCooldown()
+    {
+        return CurrentKillCooldown;
+    }
+
+    public virtual void Init() { }
+
+    public virtual void SetupOptions()
+    {
+        Options.SetupRoleOptions(Id, Group, CustomRole);
+    }
 }

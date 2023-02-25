@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using TownOfHost.Listener;
 using TownOfHost.NewRole;
 using UnityEngine;
 using static TownOfHost.Options;
@@ -62,8 +63,8 @@ namespace TownOfHost
         // 役職数・確率
         public static Dictionary<CustomRoles, int> roleCounts;
         public static Dictionary<CustomRoles, float> roleSpawnChances;
-        public static Dictionary<CustomRoles, OptionItem> CustomRoleCounts;
-        public static Dictionary<CustomRoles, StringOptionItem> CustomRoleSpawnChances;
+        public static Dictionary<CustomRoles, OptionItem> CustomRoleCounts = new();
+        public static Dictionary<CustomRoles, StringOptionItem> CustomRoleSpawnChances = new();
         public static readonly string[] rates =
         {
             "Rate0",  "Rate5",  "Rate10", "Rate20", "Rate30", "Rate40",
@@ -330,8 +331,6 @@ namespace TownOfHost
                 .SetGameMode(CustomGameMode.All);
 
             #region 役職・詳細設定
-            CustomRoleCounts = new();
-            CustomRoleSpawnChances = new();
             // GM
             EnableGM = BooleanOptionItem.Create(100, "GM", false, TabGroup.MainSettings, false)
                 .SetColor(Utils.GetRoleColor(CustomRoles.GM))
@@ -404,6 +403,11 @@ namespace TownOfHost
                 .SetValueFormat(OptionFormat.Times);
             SabotageMaster.SetupCustomOption();
             Sheriff.SetupCustomOption();
+
+            foreach (var role in NewRole.RoleManager.GetRoles()) role.SetupOptions();
+
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnOptionHolderRegister();
+
             SetupRoleOptions(20500, TabGroup.CrewmateRoles, CustomRoles.Snitch);
             SnitchEnableTargetArrow = BooleanOptionItem.Create(20510, "SnitchEnableTargetArrow", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Snitch]);
             SnitchCanGetArrowColor = BooleanOptionItem.Create(20511, "SnitchCanGetArrowColor", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Snitch]);
@@ -447,9 +451,6 @@ namespace TownOfHost
             // Add-Ons
             LastImpostor.SetupCustomOption();
             #endregion
-
-
-            foreach (var role in NewRole.RoleManager.GetRoles()) SetupRoleOptions(role.Id, role.Group, role.CustomRole);
 
             KillFlashDuration = FloatOptionItem.Create(90000, "KillFlashDuration", new(0.1f, 0.45f, 0.05f), 0.3f, TabGroup.MainSettings, false)
                 .SetHeader(true)
@@ -679,11 +680,12 @@ namespace TownOfHost
                 .SetColor(Utils.GetRoleColor(role))
                 .SetHeader(true)
                 .SetGameMode(customGameMode) as StringOptionItem;
-            var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false).SetParent(spawnOption)
+            var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false)
+                .SetParent(spawnOption!)
                 .SetValueFormat(OptionFormat.Players)
                 .SetGameMode(customGameMode);
 
-            CustomRoleSpawnChances.Add(role, spawnOption);
+            CustomRoleSpawnChances.Add(role, spawnOption!);
             CustomRoleCounts.Add(role, countOption);
         }
         private static void SetupLoversRoleOptionsToggle(int id, CustomGameMode customGameMode = CustomGameMode.Standard)

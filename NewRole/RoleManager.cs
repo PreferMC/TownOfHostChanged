@@ -9,6 +9,9 @@ public static class RoleManager
 
     public static void RegisterRole(this Role role)
     {
+        // role.OptionItems = new();
+        // Options.CustomRoleSpawnChances.TryGetValue(role.CustomRole, out StringOptionItem outValue);
+        // if (outValue != null) role.MainOption = outValue;
         Roles.Add(role);
     }
 

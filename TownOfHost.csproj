@@ -8,6 +8,12 @@
     <Nullable>enable</Nullable>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="$(AmongUs)\BepInEx\core\*.dll" />
@@ -35,6 +41,10 @@
     
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-be.577" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <Folder Include="Util" />
   </ItemGroup>
 
   <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">

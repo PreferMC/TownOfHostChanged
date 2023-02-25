@@ -195,22 +195,21 @@ public class Main : BasePlugin
         BanManager.Init();
         TemplateManager.Init();
 
-        // Register roles here
-        new Swordsman().RegisterRoleWithListener();
-        new Amnesiac().RegisterRoleWithListener();
-        new Guesser().RegisterRoleWithListener();
-        new LegalMedicalExpert().RegisterRoleWithListener();
-        new Augur().RegisterRoleWithListener();
-        new Butcher().RegisterRoleWithListener();
-        // new Undercover().RegisterRoleWithListener();
-        new Spy().RegisterRoleWithListener();
-
         // Register commands here
         new HelpCommand().RegisterCommand();
         new RoleCommand().RegisterCommand();
         new IDCommand().RegisterCommand();
         new GetRolesCommand().RegisterCommand();
         new SetRoleCommand().RegisterCommand();
+
+        // Register roles here
+        new Swordsman().RegisterRoleWithListener();
+        new Amnesiac().RegisterRoleWithListener();
+        new Guesser().RegisterRole();
+        new LegalMedicalExpert().RegisterRoleWithListener();
+        new Augur().RegisterRoleWithListener();
+        new Butcher().RegisterRoleWithListener();
+        new Spy().RegisterRoleWithListener();
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();

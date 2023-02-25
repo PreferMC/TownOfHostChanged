@@ -8,6 +8,8 @@ public class Augur : Role, IListener
 {
     private static readonly Dictionary<PlayerControl, string> ToSendMessage = new();
 
+    private OptionItem _killCooldown;
+
     public Augur() : base(6666, CustomRoles.Augur)
     {
         Color = "#008080";
@@ -19,6 +21,20 @@ public class Augur : Role, IListener
         DisplayName = "占卜师";
         Description = "(船员阵营):\n你可以通过出刀来获取被刀者职业。";
         Info = "你将会倒大霉！";
+    }
+
+    public override float GetCurrentKillCooldown()
+    {
+        return _killCooldown.GetFloat();
+    }
+
+    public override void SetupOptions()
+    {
+        base.SetupOptions();
+        _killCooldown = FloatOptionItem.Create(Id + 1, "KillCooldown", new(30f, 80f, 1f), 60f, TabGroup.CrewmateRoles, false)
+            .SetParent(Options.CustomRoleSpawnChances[CustomRoles.Augur])
+            .SetGameMode(CustomGameMode.Standard)
+            .SetValueFormat(OptionFormat.Seconds);
     }
 
     public bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target)

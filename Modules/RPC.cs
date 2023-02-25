@@ -5,7 +5,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using TownOfHost.Listener;
-using TownOfHost.Util;
 using static TownOfHost.Translator;
 
 namespace TownOfHost
@@ -78,16 +77,6 @@ namespace TownOfHost
                 Logger.Warn($"{__instance?.Data?.PlayerName}:{callId}({RPC.GetRpcName(callId)}) ホスト以外から送信されたためキャンセルしました。", "CustomRPC");
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (PlayerUtils.PlayersWithRpc.ContainsKey(__instance!.PlayerId))
-                    {
-                        if (PlayerUtils.PlayersWithRpc[__instance.PlayerId] == callId && PlayerUtils.IsUsingAum(callId)) AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
-                    }
-                    else
-                    {
-                        PlayerUtils.PlayersWithRpc.Add(__instance.PlayerId, callId);
-                        return false;
-                    }
-
                     AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
                     Logger.Warn($"多次收到来自 {__instance?.Data?.PlayerName} 的不受信用的RPC，因此将其踢出。", "Kick");
                     Logger.SendInGame(string.Format(GetString("Warning.InvalidRpc"), __instance?.Data?.PlayerName));

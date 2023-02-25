@@ -121,6 +121,8 @@ class ChangeRoleSettings
         AntiBlackout.Reset();
         IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 
+        foreach (var role in NewRole.RoleManager.GetRoles()) role.Init();
+
         foreach (var listener in ListenerManager.GetListeners()) listener.OnGameStarted(__instance);
 
         MeetingStates.MeetingCalled = false;
