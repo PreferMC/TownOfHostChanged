@@ -20,7 +20,7 @@ public class Augur : Role, IListener
         CurrentKillCooldown = 60f;
         DisplayName = "占卜师";
         Description = "(船员阵营):\n你可以通过出刀来获取被刀者职业。";
-        Info = "你将会倒大霉！";
+        Info = "看看我的水晶球！";
     }
 
     public override float GetCurrentKillCooldown()
@@ -32,7 +32,7 @@ public class Augur : Role, IListener
     {
         base.SetupOptions();
         _killCooldown = FloatOptionItem.Create(Id + 1, "KillCooldown", new(30f, 80f, 1f), 60f, TabGroup.CrewmateRoles, false)
-            .SetParent(Options.CustomRoleSpawnChances[CustomRoles.Augur])
+            .SetParent(Options.CustomRoleSpawnChances[CustomRole])
             .SetGameMode(CustomGameMode.Standard)
             .SetValueFormat(OptionFormat.Seconds);
     }

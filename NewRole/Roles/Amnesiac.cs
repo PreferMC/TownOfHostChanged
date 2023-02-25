@@ -8,6 +8,8 @@ namespace TownOfHost.NewRole.Roles;
  */
 public class Amnesiac : Role, IListener
 {
+    private OptionItem _canReportImpostorBody;
+
     public Amnesiac() : base(1919810, CustomRoles.Amnesiac)
     {
         Color = "#3399ff";
@@ -27,6 +29,12 @@ public class Amnesiac : Role, IListener
         {
             // var newRole = target.GetCustomRole().GetRoleByCustomRole();
             var typeRole = target.GetCustomRole();
+            if (!_canReportImpostorBody.GetBool() && typeRole.CanKill())
+            {
+                reporter.RpcMurderPlayer(reporter);
+                return;
+            }
+
             reporter.RpcSetRole(typeRole.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
             reporter.RpcSetCustomRole(typeRole);
             /*
@@ -42,5 +50,13 @@ public class Amnesiac : Role, IListener
                 reporter.RpcSetRole(target.GetCustomRole().IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
             reporter.RpcSetCustomRole(target.GetCustomRole());*/
         }, 10f, "Amnesiac Task");
+    }
+
+    public override void SetupOptions()
+    {
+        base.SetupOptions();
+        _canReportImpostorBody = BooleanOptionItem.Create(Id + 2, "CanReportImpostorBody", true, Group, false)
+            .SetParent(Options.CustomRoleSpawnChances[CustomRole])
+            .SetGameMode(CustomGameMode.Standard);
     }
 }

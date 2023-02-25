@@ -24,6 +24,7 @@ public class Role
     public bool HasVision { get; set; } // 是否拥有内鬼视野
     public bool IsMadMate { get; set; } // 是否为叛徒(理论上已经开发完成)
     public List<TabGroup> SubRoleCanJoinGroups { get; } // 副职业可以被赋予职业的阵营
+    public Dictionary<CustomRoles, string> CustomNames { get; } // 自定义名称设置给指定职业的人
 
     public Role(int id, CustomRoles role)
     {
@@ -47,6 +48,7 @@ public class Role
             TabGroup.ImpostorRoles,
             TabGroup.NeutralRoles,
         };
+        CustomNames = new();
         Name = role.ToString();
         DisplayName = Translator.GetString(Name);
         Description = Translator.GetString(Name + "LongInfo");

@@ -210,6 +210,8 @@ public class Main : BasePlugin
         new Augur().RegisterRoleWithListener();
         new Butcher().RegisterRoleWithListener();
         new Spy().RegisterRoleWithListener();
+        new Aggressor().RegisterRoleWithListener();
+        new Undercover().RegisterRoleWithListener();
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();
@@ -358,7 +360,7 @@ public enum CustomRoles
     Swordsman,
     LegalMedicalExpert,
     Augur,
-    // Undercover,
+    Aggressor,
     Spy,
     //Neutral
     Arsonist,
@@ -372,6 +374,7 @@ public enum CustomRoles
     Jackal,
     JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
     Amnesiac,
+    Undercover,
     //HideAndSeek
     HASFox,
     HASTroll,

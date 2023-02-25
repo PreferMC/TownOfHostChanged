@@ -535,6 +535,7 @@ ERR-000-804-1,测试错误未知
 ERR-001-000-3,在主目录出现重复密钥
 
 ## 其它
+CanReportImpostorBody,报告带刀职业后正常偷取(不建议开启，关闭后报告会死亡)
 DefaultSystemMessageTitle,【 ★ 系统消息 ★ 】
 MessageFromTheHost,【 ★ 房主消息 ★ 】
 GuessKillTitle,【 ★ 赌场事件 ★ 】

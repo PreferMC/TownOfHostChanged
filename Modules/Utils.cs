@@ -835,7 +835,7 @@ public static class Utils
                 {
                     //targetがseer自身の場合は何もしない
                     if (target == seer) continue;
-                    TownOfHost.Logger.Info("NotifyRoles-Loop2-" + target.GetNameWithRole() + ":START", "NotifyRoles");
+                    Logger.Info("NotifyRoles-Loop2-" + target.GetNameWithRole() + ":START", "NotifyRoles");
 
                     //他人のタスクはtargetがタスクを持っているかつ、seerが死んでいる場合のみ表示されます。それ以外の場合は空になります。
                     string TargetTaskText = seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool() ? $"{GetProgressText(target)}" : "";
@@ -885,7 +885,7 @@ public static class Utils
                     if (seer.Is(CustomRoles.Puppeteer) &&
                         Main.PuppeteerList.ContainsValue(seer.PlayerId) &&
                         Main.PuppeteerList.ContainsKey(target.PlayerId))
-                        TargetMark += $"<color={Utils.GetRoleColorCode(CustomRoles.Impostor)}>◆</color>";
+                        TargetMark += $"<color={GetRoleColorCode(CustomRoles.Impostor)}>◆</color>";
 
                     //他人の役職とタスクは幽霊が他人の役職を見れるようになっていてかつ、seerが死んでいる場合のみ表示されます。それ以外の場合は空になります。
                     string TargetRoleText = seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool() ? $"<size={fontSize}>{target.GetDisplayRoleName()}{TargetTaskText}</size>\r\n" : "";
@@ -903,6 +903,11 @@ public static class Utils
                     //RealNameを取得 なければ現在の名前をRealNamesに書き込む
                     string TargetPlayerName = target.GetRealName(isMeeting);
 
+                    foreach (var role in NewRole.RoleManager.GetRoles())
+                    foreach (var pair in role.CustomNames)
+                        if (pair.Key == seer.GetCustomRole())
+                            TargetPlayerName = pair.Value.Replace("[Name]", target.GetRealName(isMeeting));
+
                     //ターゲットのプレイヤー名の色を書き換えます。
                     if (SeerKnowsImpostors) //Seerがインポスターが誰かわかる状態
                     {
@@ -918,7 +923,7 @@ public static class Utils
                              (seer.Is(CustomRoles.JSchrodingerCat) && target.Is(CustomRoles.Jackal)) || // J猫 --> ジャッカル
                              (seer.Is(CustomRoles.MSchrodingerCat) && target.Is(RoleType.Impostor))) // M猫 --> インポスター
                         TargetPlayerName = ColorString(target.GetRoleColor(), TargetPlayerName);
-                    else if (Utils.IsActive(SystemTypes.Electrical) && target.Is(CustomRoles.Mare) && !isMeeting)
+                    else if (IsActive(SystemTypes.Electrical) && target.Is(CustomRoles.Mare) && !isMeeting)
                         TargetPlayerName = ColorString(GetRoleColor(CustomRoles.Impostor), TargetPlayerName); //targetの赤色で表示
                     else
                     {
@@ -943,10 +948,12 @@ public static class Utils
                     //適用
                     target.RpcSetNamePrivate(TargetName, true, seer, force: NoCache);
 
-                    TownOfHost.Logger.Info("NotifyRoles-Loop2-" + target.GetNameWithRole() + ":END", "NotifyRoles");
+                    Main.Logger.LogInfo(TargetName);
+
+                    Logger.Info("NotifyRoles-Loop2-" + target.GetNameWithRole() + ":END", "NotifyRoles");
                 }
             }
-            TownOfHost.Logger.Info("NotifyRoles-Loop1-" + seer.GetNameWithRole() + ":END", "NotifyRoles");
+            Logger.Info("NotifyRoles-Loop1-" + seer.GetNameWithRole() + ":END", "NotifyRoles");
         }
     }
     public static void MarkEveryoneDirtySettings()

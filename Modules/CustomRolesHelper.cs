@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using TownOfHost.NewRole;
 
@@ -5,6 +6,45 @@ namespace TownOfHost
 {
     static class CustomRolesHelper
     {
+        public static bool CanKill(this CustomRoles role)
+        {
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+                if (newRole.CanKill) return true;
+
+            return role.IsImpostor() ||
+                   role is CustomRoles.Sheriff or
+                   CustomRoles.Jackal or
+                   CustomRoles.Egoist or
+                   CustomRoles.Arsonist or
+                   CustomRoles.LastImpostor;
+        }
+
+        public static List<CustomRoles> GetImpostorRoles()
+        {
+            var roles = new List<CustomRoles>
+            {
+                CustomRoles.Impostor,
+                CustomRoles.Shapeshifter,
+                CustomRoles.BountyHunter,
+                CustomRoles.Vampire,
+                CustomRoles.Witch,
+                CustomRoles.Warlock,
+                CustomRoles.SerialKiller,
+                CustomRoles.Mare,
+                CustomRoles.Puppeteer,
+                CustomRoles.EvilWatcher,
+                CustomRoles.TimeThief,
+                CustomRoles.Mafia,
+                CustomRoles.FireWorks,
+                CustomRoles.Sniper,
+                CustomRoles.EvilTracker
+            };
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+                if (newRole.Group == TabGroup.ImpostorRoles && !roles.Contains(newRole.CustomRole)) roles.Add(newRole.CustomRole);
+
+            return roles;
+        }
+
         public static bool IsImpostor(this CustomRoles role)
         {
             foreach (var newRole in NewRole.RoleManager.GetRoles())
