@@ -49,13 +49,13 @@ public class Guesser : Role
                 return;
             }
 
-            if (args.Length != 3)
+            if (args.Length != 2)
             {
                 SendMessage("错误的语法，正确语法：/guess (玩家ID) (猜测职业)" + "\n" + "获取所有玩家ID方法：/id", player);
                 return;
             }
 
-            if (!int.TryParse(args[1], out int outNum))
+            if (!int.TryParse(args[0], out int outNum))
             {
                 SendMessage("玩家ID必须是数字！", player);
                 return;
@@ -67,7 +67,7 @@ public class Guesser : Role
                 SendMessage("找不到这个玩家，请输入/id检查", player);
                 return;
             }
-            var typeRole = Utils.GetRoleByName(args[2]);
+            var typeRole = Utils.GetRoleByName(args[1]);
             if (typeRole == null)
             {
                 SendMessage("找不到这个职业，请检查拼写。", player);

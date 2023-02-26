@@ -10,7 +10,7 @@ public class Augur : Role, IListener
 
     private OptionItem _killCooldown;
 
-    public Augur() : base(6666, CustomRoles.Augur)
+    public Augur() : base(60606, CustomRoles.Augur)
     {
         Color = "#008080";
         HasTask = false;
@@ -31,9 +31,8 @@ public class Augur : Role, IListener
     public override void SetupOptions()
     {
         base.SetupOptions();
-        _killCooldown = FloatOptionItem.Create(Id + 1, "KillCooldown", new(30f, 80f, 1f), 60f, TabGroup.CrewmateRoles, false)
+        _killCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(30f, 80f, 2.5f), 60f, Group, false)
             .SetParent(Options.CustomRoleSpawnChances[CustomRole])
-            .SetGameMode(CustomGameMode.Standard)
             .SetValueFormat(OptionFormat.Seconds);
     }
 
@@ -52,13 +51,15 @@ public class Augur : Role, IListener
         return true;
     }
 
-    public void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
+    public bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
         new LateTask(() =>
         {
             foreach (var keyValuePair in ToSendMessage) Utils.SendMessage(keyValuePair.Value, keyValuePair.Key.PlayerId);
             ToSendMessage.Clear();
         }, 5, "Task for augur");
+
+        return true;
     }
 
     public void OnGameStarted(AmongUsClient client)

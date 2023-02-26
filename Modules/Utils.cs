@@ -808,7 +808,7 @@ public static class Utils
             if (!isMeeting) SelfName += "\r\n";
 
             //適用
-            seer.RpcSetNamePrivate(SelfName, true, force: NoCache);
+            seer.RpcSetNamePrivate(SelfName, false, force: NoCache);
 
             //seerが死んでいる場合など、必要なときのみ第二ループを実行する
             if (seer.Data.IsDead //seerが死んでいる
@@ -868,19 +868,19 @@ public static class Utils
                         TargetMark += $"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>";
                     }
 
+                    foreach (var role in NewRole.RoleManager.GetRoles())
+                    foreach (var pair in role.CustomSuffix)
+                        if (seer.Is(pair.Key) && target.GetCustomRole() == role.CustomRole) TargetMark += pair.Value;
+
                     if (seer.Is(CustomRoles.Arsonist))//seerがアーソニストの時
                     {
                         if (seer.IsDousedPlayer(target)) //seerがtargetに既にオイルを塗っている(完了)
-                        {
                             TargetMark += $"<color={GetRoleColorCode(CustomRoles.Arsonist)}>▲</color>";
-                        }
                         if (
                             Main.ArsonistTimer.TryGetValue(seer.PlayerId, out var ar_kvp) && //seerがオイルを塗っている途中(現在進行)
                             ar_kvp.Item1 == target //オイルを塗っている対象がtarget
                         )
-                        {
                             TargetMark += $"<color={GetRoleColorCode(CustomRoles.Arsonist)}>△</color>";
-                        }
                     }
                     if (seer.Is(CustomRoles.Puppeteer) &&
                         Main.PuppeteerList.ContainsValue(seer.PlayerId) &&
@@ -902,12 +902,12 @@ public static class Utils
 
                     //RealNameを取得 なければ現在の名前をRealNamesに書き込む
                     string TargetPlayerName = target.GetRealName(isMeeting);
-
+/*
                     foreach (var role in NewRole.RoleManager.GetRoles())
                     foreach (var pair in role.CustomNames)
                         if (pair.Key == seer.GetCustomRole())
                             TargetPlayerName = pair.Value.Replace("[Name]", target.GetRealName(isMeeting));
-
+*/
                     //ターゲットのプレイヤー名の色を書き換えます。
                     if (SeerKnowsImpostors) //Seerがインポスターが誰かわかる状態
                     {
@@ -946,7 +946,7 @@ public static class Utils
                     string TargetName = $"{TargetRoleText}{TargetPlayerName}{targetDeathReason}{TargetMark}";
 
                     //適用
-                    target.RpcSetNamePrivate(TargetName, true, seer, force: NoCache);
+                    target.RpcSetNamePrivate(TargetName, false, seer, force: NoCache);
 
                     Main.Logger.LogInfo(TargetName);
 

@@ -1,6 +1,7 @@
 using System.Linq;
 using AmongUs.Data;
 using HarmonyLib;
+using TownOfHost.Listener;
 
 namespace TownOfHost
 {
@@ -54,6 +55,8 @@ namespace TownOfHost
                 //霊界用暗転バグ対処
                 if (/*!AntiBlackout.OverrideExiledPlayer && */Main.ResetCamPlayerList.Contains(exiled.PlayerId))
                     exiled.Object?.ResetPlayerCam(1f);
+
+                foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerExiled(exiled);
 
                 exiled.IsDead = true;
                 Main.PlayerStates[exiled.PlayerId].deathReason = PlayerState.DeathReason.Vote;

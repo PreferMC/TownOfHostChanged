@@ -20,7 +20,7 @@ using UnityEngine;
 [assembly: AssemblyInformationalVersionAttribute(TownOfHost.Main.PluginVersion)]
 namespace TownOfHost;
 
-[BepInPlugin(PluginGuid, "Town Of Host", PluginVersion)]
+[BepInPlugin(PluginGuid, "Town Of Host Changed", PluginVersion)]
 [BepInIncompatibility("jp.ykundesu.supernewroles")]
 [BepInProcess("Among Us.exe")]
 public class Main : BasePlugin
@@ -40,22 +40,22 @@ public class Main : BasePlugin
     public static readonly string Text =
         $"\r\n<color=#ffc0cb>随缘更新呢</color>";
     // Discordサーバーの招待リンク / Discord Server Invite URL (Default: https://discord.gg/W5ug6hXB9V)
-    public static readonly string DiscordInviteUrl = "Null";
+    public static readonly string DiscordInviteUrl = "https://discord.gg/W5ug6hXB9V";
     // ==========
     public const string OriginalForkId = "OriginalTOH"; // Don't Change The Value. / この値を変更しないでください。
     // == 認証設定 / Authentication Config ==
     // デバッグキーの認証インスタンス
-    public static HashAuth DebugKeyAuth { get; private set; }
+    // public static HashAuth DebugKeyAuth { get; private set; }
     // デバッグキーのハッシュ値
-    public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
+    // public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     // デバッグキーのソルト
-    public const string DebugKeySalt = "59687b";
+    // public const string DebugKeySalt = "59687b";
     // デバッグキーのコンフィグ入力
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
 
     // ==========
-    public const string PluginGuid = "com.emptybottle.townofhost";
-    public const string PluginVersion = "1.0.2";
+    public const string PluginGuid = "space.commandf1.townofhostchanged";
+    public const string PluginVersion = "1.0.3";
     public Harmony Harmony { get; } = new(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -162,10 +162,10 @@ public class Main : BasePlugin
         //TownOfHost.Logger.isDetail = true;
 
         // 認証関連-初期化
-        DebugKeyAuth = new HashAuth(DebugKeyHash, DebugKeySalt);
+        // DebugKeyAuth = new HashAuth(DebugKeyHash, DebugKeySalt);
 
         // 認証関連-認証
-        DebugModeManager.Auth(DebugKeyAuth, DebugKeyInput.Value);
+        // DebugModeManager.Auth(DebugKeyAuth, DebugKeyInput.Value);
 
         BitPlayers = new Dictionary<byte, (byte, float)>();
         WarlockTimer = new Dictionary<byte, float>();
@@ -211,7 +211,9 @@ public class Main : BasePlugin
         new Butcher().RegisterRoleWithListener();
         new Spy().RegisterRoleWithListener();
         new Aggressor().RegisterRoleWithListener();
-        new Undercover().RegisterRoleWithListener();
+        new Mourner().RegisterRoleWithListener();
+        new Sidekick().RegisterRoleWithListener();
+        new Thief().RegisterRoleWithListener();
 
         // Register listeners here
         new PlayerJoinListener().RegisterListener();
@@ -279,8 +281,6 @@ public class Main : BasePlugin
                 switch (role.GetRoleType())
                 {
                     case RoleType.Impostor:
-                        RoleColors.TryAdd(role, "#ff0000");
-                        break;
                     case RoleType.Madmate:
                         RoleColors.TryAdd(role, "#ff0000");
                         break;
@@ -322,6 +322,7 @@ public enum CustomRoles
     FireWorks,
     Mafia,
     SerialKiller,
+    Mourner,
     //ShapeMaster,
     Sniper,
     Vampire,
@@ -374,7 +375,8 @@ public enum CustomRoles
     Jackal,
     JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
     Amnesiac,
-    Undercover,
+    Sidekick,
+    Thief,
     //HideAndSeek
     HASFox,
     HASTroll,

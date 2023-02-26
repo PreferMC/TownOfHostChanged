@@ -295,6 +295,8 @@ namespace TownOfHost
             var shapeshifter = __instance;
             var shapeshifting = shapeshifter.PlayerId != target.PlayerId;
 
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerShapeShift(shapeshifter, target);
+
             Main.CheckShapeshift[shapeshifter.PlayerId] = shapeshifting;
             Main.ShapeshiftTarget[shapeshifter.PlayerId] = target.PlayerId;
 
@@ -395,7 +397,10 @@ namespace TownOfHost
             if (!AmongUsClient.Instance.AmHost) return true;
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
-            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerReportBody(__instance, target!);
+            // foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerReportBody(__instance, target!);
+            foreach (var listener in ListenerManager.GetListeners())
+                if (!listener.OnPlayerReportBody(__instance, target!))
+                    return false;
             Main.ArsonistTimer.Clear();
             if (target == null) //ボタン
             {

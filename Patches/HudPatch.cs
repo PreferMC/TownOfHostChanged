@@ -238,6 +238,7 @@ namespace TownOfHost
                     break;
                 case CustomRoles.Jackal:
                     Jackal.SetHudActive(__instance, isActive);
+                    __instance.AbilityButton.ToggleVisible(true);
                     break;
             }
 

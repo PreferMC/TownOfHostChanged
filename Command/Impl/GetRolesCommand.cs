@@ -34,8 +34,8 @@ public class GetRolesCommand : Command
         int i = 0;
         foreach (var subRole in player.GetCustomSubRoles())
         {
-            i ++;
             str = str + Translator.GetString(subRole.ToString()) + ((i == (player.GetCustomSubRoles().Count - 1) || player.GetCustomSubRoles().Count == 1) ? "" : ", ");
+            i ++;
         }
 
         str += "]";

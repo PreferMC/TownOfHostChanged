@@ -11,7 +11,7 @@ namespace TownOfHost
         private static readonly int Id = 50900;
         public static List<byte> playerIdList = new();
 
-        private static OptionItem KillCooldown;
+        public static OptionItem KillCooldown;
         public static OptionItem CanVent;
         public static OptionItem CanUseSabotage;
         private static OptionItem HasImpostorVision;
@@ -57,7 +57,7 @@ namespace TownOfHost
         public static void SetHudActive(HudManager __instance, bool isActive)
         {
             __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage.GetBool());
-            __instance.AbilityButton.ToggleVisible(false);
+            __instance.AbilityButton.ToggleVisible(true);
         }
     }
 }

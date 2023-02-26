@@ -20,10 +20,10 @@ public class Amnesiac : Role, IListener
         Description = "(独立阵营):\n你可以通过报告来偷取被报告死者职业，如果死者已经退出，你会偷取到白板船员。";
     }
 
-    public void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
+    public bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (target == null! || reporter == null) return;
-        if (reporter.GetCustomRole() != CustomRoles.Amnesiac) return;
+        if (target == null! || reporter == null) return true;
+        if (reporter.GetCustomRole() != CustomRoles.Amnesiac) return true;
 
         new LateTask(() =>
         {
@@ -49,7 +49,9 @@ public class Amnesiac : Role, IListener
             else
                 reporter.RpcSetRole(target.GetCustomRole().IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
             reporter.RpcSetCustomRole(target.GetCustomRole());*/
-        }, 10f, "Amnesiac Task");
+        }, 5f, "Amnesiac Task");
+
+        return true;
     }
 
     public override void SetupOptions()

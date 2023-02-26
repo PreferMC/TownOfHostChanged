@@ -2,13 +2,15 @@ namespace TownOfHost.Listener.Impl;
 
 public class MeetingStartListener : IListener
 {
-    public void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
+    public bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (target != null!) return; // 判断是否是启动会议，而不是报告尸体
+        if (target != null!) return true; // 判断是否是启动会议，而不是报告尸体
 
         foreach (var playerControl in Main.AllAlivePlayerControls)
             if (playerControl.shapeshifting) // 如果这个人正在变形期间
               FixShapeShiftBug(playerControl);
+
+        return true;
     }
 
     private void FixShapeShiftBug(PlayerControl player)

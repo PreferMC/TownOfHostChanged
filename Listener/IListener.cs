@@ -9,7 +9,7 @@ namespace TownOfHost.Listener;
  */
 public interface IListener
 {
-    void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target) { }
+    bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target) { return true;}
 
     bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target) { return true; }
 
@@ -23,11 +23,13 @@ public interface IListener
 
     void OnPlayerLeft(AmongUsClient client, ClientData data, DisconnectReasons reason) { }
 
-    void OnGameJoin(AmongUsClient client) { }
-
     void OnCreatePlayer(AmongUsClient auClient, ClientData client) { }
 
     void OnPlayerFixedUpdate(PlayerControl player) { }
 
     void OnOptionHolderRegister() { }
+
+    void OnPlayerShapeShift(PlayerControl shapeShifter, PlayerControl target) { }
+
+    void OnPlayerExiled(GameData.PlayerInfo exiled) { }
 }

@@ -30,11 +30,11 @@ public class Spy : Role, IListener
         return true;
     }
 
-    public void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
+    public bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (target == null!) return;
+        if (target == null!) return true;
 
-        if (reporter.GetCustomRole() != CustomRoles.Spy) return;
+        if (reporter.GetCustomRole() != CustomRoles.Spy) return true;
 
         foreach (var keyValuePair in KillerRoles)
             if (keyValuePair.Key == target.PlayerId)
@@ -42,6 +42,8 @@ public class Spy : Role, IListener
                 {
                     Utils.SendMessage("凶手的职业是 " + Translator.GetString(keyValuePair.Value.ToString()) , reporter.PlayerId, "★ 侦探信息 ★");
                 }, 5.0f, "Spy task");
+
+        return true;
     }
 
     public void OnGameStarted(AmongUsClient client)

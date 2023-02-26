@@ -22,11 +22,11 @@ public class LegalMedicalExpert : Role, IListener
         BaseRole = RoleTypes.Impostor;
     }
 
-    public void OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
+    public bool OnPlayerReportBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (reporter == null || target == null!) return;
+        if (reporter == null || target == null!) return true;
 
-        if (reporter.GetCustomRole() != CustomRoles.LegalMedicalExpert) return;
+        if (reporter.GetCustomRole() != CustomRoles.LegalMedicalExpert) return true;
 
         foreach (var pair in DeadTime)
             if (pair.Key == target.PlayerId)
@@ -35,8 +35,10 @@ public class LegalMedicalExpert : Role, IListener
                 {
                     Utils.SendMessage("看来死者死亡时间大约在在 " + (DateTime.Now - pair.Value).TotalSeconds + " 秒之前" , reporter.PlayerId, "★ 法医信息 ★");
                 }, 5.0f, "LegalMedicalExpert Task");
-                return;
+                return true;
             }
+
+        return true;
     }
 
     public bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target)

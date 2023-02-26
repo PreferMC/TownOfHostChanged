@@ -191,7 +191,7 @@ class SelectRolesPatch
             Dictionary<(byte, byte), RoleTypes> rolesMap = new();
             AssignDesyncRole(CustomRoles.Sheriff, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
             AssignDesyncRole(CustomRoles.Arsonist, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
-            AssignDesyncRole(CustomRoles.Jackal, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
+            AssignDesyncRole(CustomRoles.Jackal, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Shapeshifter);
             foreach (var role in NewRole.RoleManager.GetRoles())
             {
                 if (!role.CanKill) continue;
@@ -332,8 +332,10 @@ class SelectRolesPatch
             foreach (var value in Map)
             {
                 var baseRole = value.Value;
-                var newRole = NewRole.RoleManager.GetRoleByCustomRole(value.Key);
+                var newRole = value.Key.GetRoleByCustomRole();
                 if (newRole is { CanKill: true }) continue;
+
+                if (newRole is { GiveRoleOnStart: false }) continue;
 
                 switch (baseRole)
                 {
