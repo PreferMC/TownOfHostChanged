@@ -7,6 +7,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
+using TownOfHost.AppData;
 using TownOfHost.Command;
 using TownOfHost.Command.Impl;
 using TownOfHost.Listener;
@@ -36,6 +37,8 @@ public class Main : BasePlugin
     public static readonly string ForkId = "TOHC";
     // Discordボタンを表示するか / Show Discord Button (Default: true)
     public static readonly bool ShowDiscordButton = false;
+    // 文件数据目录
+    public static readonly string AppDataDir = "";
     // 在右上角文字
     public static readonly string Text =
         $"\r\n<color=#ffc0cb>随缘更新呢</color>";
@@ -55,7 +58,7 @@ public class Main : BasePlugin
 
     // ==========
     public const string PluginGuid = "space.commandf1.townofhostchanged";
-    public const string PluginVersion = "1.0.3";
+    public const string PluginVersion = "1.0.4";
     public Harmony Harmony { get; } = new(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -300,13 +303,15 @@ public class Main : BasePlugin
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.BaseTag)}: {ThisAssembly.Git.BaseTag}", "GitVersion");
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Commit)}: {ThisAssembly.Git.Commit}", "GitVersion");
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Commits)}: {ThisAssembly.Git.Commits}", "GitVersion");
-        TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.IsDirty)}: {ThisAssembly.Git.IsDirty}", "GitVersion");
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Sha)}: {ThisAssembly.Git.Sha}", "GitVersion");
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Tag)}: {ThisAssembly.Git.Tag}", "GitVersion");
 
         ClassInjector.RegisterTypeInIl2Cpp<ErrorText>();
 
         Harmony.PatchAll();
+
+        // load appdata
+        AppDataLoader.Loader.Init();
     }
 }
 public enum CustomRoles

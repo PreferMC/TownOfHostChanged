@@ -1,11 +1,25 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using TownOfHost.NewRole;
 
 namespace TownOfHost
 {
     static class CustomRolesHelper
     {
+        public static bool CanUseAbility(this CustomRoles role)
+        {
+            foreach (var newRole in NewRole.RoleManager.GetRoles())
+                if (newRole.CanUseAbility) return true;
+            return role is CustomRoles.Shapeshifter or
+                CustomRoles.Sniper or
+                CustomRoles.Vampire or
+                CustomRoles.Witch or
+                CustomRoles.Warlock or
+                CustomRoles.Mare or
+                CustomRoles.Puppeteer or
+                CustomRoles.TimeThief or
+                CustomRoles.EvilTracker;
+        }
+
         public static bool CanKill(this CustomRoles role)
         {
             foreach (var newRole in NewRole.RoleManager.GetRoles())

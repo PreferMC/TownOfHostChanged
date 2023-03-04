@@ -250,8 +250,6 @@ class SelectRolesPatch
 
         //Utils.ApplySuffix();
 
-        var rand = IRandom.Instance;
-
         List<PlayerControl> Crewmates = new();
         List<PlayerControl> Impostors = new();
         List<PlayerControl> Scientists = new();
@@ -312,10 +310,8 @@ class SelectRolesPatch
             AssignCustomRolesFromList(CustomRoles.HASFox, Crewmates);
             AssignCustomRolesFromList(CustomRoles.HASTroll, Crewmates);
             foreach (var pair in Main.PlayerStates)
-            {
                 //RPCによる同期
                 ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
-            }
             //色設定処理
             SetColorPatch.IsAntiGlitchDisabled = true;
 
@@ -371,10 +367,8 @@ class SelectRolesPatch
 
             //RPCによる同期
             foreach (var pc in Main.AllPlayerControls)
-            {
                 if (pc.Is(CustomRoles.Watcher))
                     Main.PlayerStates[pc.PlayerId].MainRole = Options.IsEvilWatcher ? CustomRoles.EvilWatcher : CustomRoles.NiceWatcher;
-            }
             foreach (var pair in Main.PlayerStates)
             {
                 ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
@@ -564,31 +558,31 @@ class SelectRolesPatch
 
     private static List<PlayerControl> AssignCustomRolesFromList(CustomRoles role, List<PlayerControl> players, int RawCount = -1)
     {
-        if (players == null || players.Count <= 0) return null;
+        if (players == null! || players.Count <= 0) return null!;
         var rand = IRandom.Instance;
         var count = Math.Clamp(RawCount, 0, players.Count);
         if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, players.Count);
-        if (count <= 0) return null;
-        List<PlayerControl> AssignedPlayers = new();
+        if (count <= 0) return null!;
+        List<PlayerControl> assignedPlayers = new();
         SetColorPatch.IsAntiGlitchDisabled = true;
         for (var i = 0; i < count; i++)
         {
             var player = players[rand.Next(0, players.Count)];
-            AssignedPlayers.Add(player);
+            assignedPlayers.Add(player);
             players.Remove(player);
             Main.PlayerStates[player.PlayerId].MainRole = role;
-            Logger.Info("役職設定:" + player?.Data?.PlayerName + " = " + role.ToString(), "AssignRoles");
+            Logger.Info("役職設定:" + player?.Data?.PlayerName + " = " + role, "AssignRoles");
 
             if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
             {
-                if (player.Is(CustomRoles.HASTroll))
+                if (player != null && player.Is(CustomRoles.HASTroll))
                     player.RpcSetColor(2);
-                else if (player.Is(CustomRoles.HASFox))
+                else if (player != null && player.Is(CustomRoles.HASFox))
                     player.RpcSetColor(3);
             }
         }
         SetColorPatch.IsAntiGlitchDisabled = false;
-        return AssignedPlayers;
+        return assignedPlayers;
     }
 
     private static void AssignLoversRolesFromList()

@@ -27,17 +27,13 @@ public class Amnesiac : Role, IListener
 
         new LateTask(() =>
         {
-            // var newRole = target.GetCustomRole().GetRoleByCustomRole();
+            var newRole = target.GetCustomRole().GetRoleByCustomRole();
             var typeRole = target.GetCustomRole();
             if (!_canReportImpostorBody.GetBool() && typeRole.CanKill())
             {
                 reporter.RpcMurderPlayer(reporter);
                 return;
             }
-
-            reporter.RpcSetRole(typeRole.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
-            reporter.RpcSetCustomRole(typeRole);
-            /*
             if (newRole != null)
                 if (!newRole.CanUseAbility)
                     reporter.RpcSetRole(newRole.CanKill
@@ -48,7 +44,12 @@ public class Amnesiac : Role, IListener
                             ? RoleTypes.Impostor : RoleTypes.Crewmate);
             else
                 reporter.RpcSetRole(target.GetCustomRole().IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
-            reporter.RpcSetCustomRole(target.GetCustomRole());*/
+
+            if (typeRole.CanKill()) reporter.ResetKillCooldown();
+
+            if (typeRole.CanUseAbility()) reporter.RpcResetAbilityCooldown();
+
+            reporter.RpcSetCustomRole(target.GetCustomRole());
         }, 5f, "Amnesiac Task");
 
         return true;

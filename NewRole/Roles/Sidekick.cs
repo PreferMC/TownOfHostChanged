@@ -35,13 +35,16 @@ public class Sidekick : Role, IListener
     {
         player.RpcSetRole(RoleTypes.Impostor);
         player.RpcSetCustomRole(CustomRoles.Sidekick);
+        player.ResetKillCooldown();
     }
 
     private static void RiseUpToJackal(PlayerControl player)
     {
         player.RpcSetRole(RoleTypes.Shapeshifter);
         player.RpcSetCustomRole(CustomRoles.Jackal);
+        player.ResetKillCooldown();
         player.SetKillCooldown(Jackal.KillCooldown.GetFloat());
+        player.RpcResetAbilityCooldown();
     }
 
     public bool OnPlayerMurderPlayer(PlayerControl killer, PlayerControl target)

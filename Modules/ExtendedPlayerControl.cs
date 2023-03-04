@@ -29,12 +29,12 @@ namespace TownOfHost
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
         }
-        public static void RpcSetCustomRole(byte PlayerId, CustomRoles role)
+        public static void RpcSetCustomRole(byte playerId, CustomRoles role)
         {
             if (AmongUsClient.Instance.AmHost)
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, Hazel.SendOption.Reliable, -1);
-                writer.Write(PlayerId);
+                writer.Write(playerId);
                 writer.WritePacked((int)role);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
@@ -202,10 +202,8 @@ namespace TownOfHost
             if (!AmongUsClient.Instance.AmHost) return; //ホスト以外が実行しても何も起こさない
             Logger.Info($"アビリティクールダウンのリセット:{target.name}({target.PlayerId})", "RpcResetAbilityCooldown");
             if (PlayerControl.LocalPlayer == target)
-            {
                 //targetがホストだった場合
                 PlayerControl.LocalPlayer.Data.Role.SetCooldown();
-            }
             else
             {
                 //targetがホスト以外だった場合

@@ -22,7 +22,7 @@ namespace TownOfHost
         public static string downloadUrl = null;
         public static GenericPopup InfoPopup;
 
-        public static bool CanUpdate = false;
+        public static bool CanUpdate = false; // 完善后启动
 
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
         [HarmonyPriority(2)]
@@ -33,10 +33,7 @@ namespace TownOfHost
             InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
             InfoPopup.name = "InfoPopup";
             InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
-            if (!isChecked)
-            {
-                CheckRelease(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
-            }
+            if (!isChecked) CheckRelease(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
             MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
             MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) =>
@@ -58,7 +55,7 @@ namespace TownOfHost
                     using var response = await client.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
                     if (!response.IsSuccessStatusCode || response.Content == null)
                     {
-                        Logger.Error($"ステータスコード: {response.StatusCode}", "CheckRelease");
+                        Logger.Error($"状态代码: {response.StatusCode}", "CheckRelease");
                         return false;
                     }
                     result = await response.Content.ReadAsStringAsync();
@@ -94,14 +91,14 @@ namespace TownOfHost
                 }
                 if (downloadUrl == null)
                 {
-                    Logger.Error("ダウンロードURLを取得できませんでした。", "CheckRelease");
+                    Logger.Error("无法获取下载URL", "CheckRelease");
                     return false;
                 }
                 isChecked = true;
             }
             catch (Exception ex)
             {
-                Logger.Error($"リリースのチェックに失敗しました。\n{ex}", "CheckRelease", false);
+                Logger.Error($"版本检查失败。\n{ex}", "CheckRelease", false);
                 return false;
             }
             return true;
@@ -125,7 +122,7 @@ namespace TownOfHost
             }
             catch
             {
-                Logger.Error("バックアップに失敗しました", "BackupDLL");
+                Logger.Error("备份失败", "BackupDLL");
                 return false;
             }
             return true;
@@ -136,13 +133,13 @@ namespace TownOfHost
             {
                 foreach (var path in Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.bak"))
                 {
-                    Logger.Info($"{Path.GetFileName(path)}を削除", "DeleteOldDLL");
+                    Logger.Info($"{Path.GetFileName(path)}删除", "DeleteOldDLL");
                     File.Delete(path);
                 }
             }
             catch
             {
-                Logger.Error("削除に失敗しました", "DeleteOldDLL");
+                Logger.Error("删除失败", "DeleteOldDLL");
             }
             return;
         }
@@ -151,14 +148,14 @@ namespace TownOfHost
             try
             {
                 using WebClient client = new();
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
+                client.DownloadProgressChanged += DownloadCallBack;
                 client.DownloadFileAsync(new Uri(url), "BepInEx/plugins/TownOfHost.dll");
                 while (client.IsBusy) await Task.Delay(1);
                 ShowPopup(GetString("updateRestart"), true);
             }
             catch (Exception ex)
             {
-                Logger.Error($"ダウンロードに失敗しました。\n{ex}", "DownloadDLL", false);
+                Logger.Error($"下载失败\n{ex}", "DownloadDLL", false);
                 ShowPopup(GetString("updateManually"), true);
                 return false;
             }

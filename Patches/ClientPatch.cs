@@ -84,20 +84,19 @@ namespace TownOfHost
             __instance.BanButton.gameObject.SetActive(AmongUsClient.Instance.CanBan());
             __instance.KickButton.gameObject.SetActive(AmongUsClient.Instance.CanKick());
             __instance.MenuButton.gameObject.SetActive(show);
-            __instance.hotkeyGlyph.SetActive(show);
             return false;
         }
     }
-    [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.CanBan))]
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.CanBan))]
     class InnerNetClientCanBanPatch
     {
-        public static bool Prefix(InnerNet.InnerNetClient __instance, ref bool __result)
+        public static bool Prefix(InnerNetClient __instance, ref bool __result)
         {
             __result = __instance.AmHost;
             return false;
         }
     }
-    [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.KickPlayer))]
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.KickPlayer))]
     class KickPlayerPatch
     {
         public static void Prefix(InnerNet.InnerNetClient __instance, int clientId, bool ban)

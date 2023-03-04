@@ -1,7 +1,5 @@
 using System;
-using AmongUs.GameOptions;
 using HarmonyLib;
-using TownOfHost.NewRole;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static TownOfHost.Translator;
@@ -68,7 +66,7 @@ namespace TownOfHost
                         SerialKiller.GetAbilityButtonText(__instance, player);
                         break;
                     case CustomRoles.Warlock:
-                        if (!Main.CheckShapeshift[player.PlayerId] && !Main.isCurseAndKill[player.PlayerId])
+                        if (!(Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool shapeshifting) && shapeshifting) && !(Main.isCurseAndKill.TryGetValue(player.PlayerId, out bool curse) && curse))
                         {
                             __instance.KillButton.OverrideText($"{GetString("WarlockCurseButtonText")}");
                         }
@@ -219,16 +217,21 @@ namespace TownOfHost
             ((Renderer)__instance.myRend).material.SetColor("_AddColor", mainTarget ? color : Color.clear);
         }
     }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool))]
     class SetHudActivePatch
     {
         public static bool IsActive = false;
-        public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
+        public static void Postfix(HudManager __instance, [HarmonyArgument(2)] bool isActive)
         {
+            __instance.ReportButton.ToggleVisible(!GameStates.IsLobby && isActive);
+
             IsActive = isActive;
             if (!isActive) return;
 
             var player = PlayerControl.LocalPlayer;
+
+            if (player == null) return;
+
             switch (player.GetCustomRole())
             {
                 case CustomRoles.Sheriff:
