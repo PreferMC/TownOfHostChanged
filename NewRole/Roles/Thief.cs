@@ -7,11 +7,11 @@ public class Thief : Role, IListener
 {
     public Thief() : base(11112, CustomRoles.Thief)
     {
-        Color = "#00ff00";
+        Color = "#dcdcdc";
         HasTask = false;
         Group = TabGroup.NeutralRoles;
         CanKill = true;
-        CurrentKillCooldown = 20f;
+        CurrentKillCooldown = 25f;
         DisplayName = "小偷";
         Info = "你的职业不错，我的了！";
         Description = "(独立阵营):\n你可以通过击杀来偷取他人职业。";

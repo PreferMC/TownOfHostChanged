@@ -867,11 +867,6 @@ public static class Utils
                     {
                         TargetMark += $"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>";
                     }
-
-                    foreach (var role in NewRole.RoleManager.GetRoles())
-                    foreach (var pair in role.CustomSuffix)
-                        if (seer.Is(pair.Key) && target.GetCustomRole() == role.CustomRole) TargetMark += pair.Value;
-
                     if (seer.Is(CustomRoles.Arsonist))//seerがアーソニストの時
                     {
                         if (seer.IsDousedPlayer(target)) //seerがtargetに既にオイルを塗っている(完了)

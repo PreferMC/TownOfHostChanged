@@ -14,6 +14,7 @@ using TownOfHost.Listener;
 using TownOfHost.Listener.Impl;
 using TownOfHost.NewRole;
 using TownOfHost.NewRole.Roles;
+using TownOfHost.Plugin;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 
@@ -311,7 +312,10 @@ public class Main : BasePlugin
         Harmony.PatchAll();
 
         // load appdata
-        AppDataLoader.Loader.Init();
+        AppDataLoader.Init();
+
+        // plugin system
+        PluginManager.InitPluginSystem();
     }
 }
 public enum CustomRoles

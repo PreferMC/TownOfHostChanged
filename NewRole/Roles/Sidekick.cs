@@ -25,7 +25,6 @@ public class Sidekick : Role, IListener
         CanKill = true;
         CurrentKillCooldown = 233f;
         GiveRoleOnStart = false; // 开局不会给予这个职业
-        CustomSuffix.Add(CustomRoles.Jackal, "<color=#00b4eb>▲</color>");
         DisplayName = "跟班";
         Info = "我是你的狗！";
         Description = "(独立阵营):\n豺狼招募后被招募者会变成这个职业。";

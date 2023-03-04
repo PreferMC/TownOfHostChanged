@@ -1,11 +1,18 @@
+using System.IO;
+
 namespace TownOfHost.AppData;
 
 public class AppData
 {
-    private string Path { get; }
+    public string Path { get; }
 
     public AppData(string path)
     {
-        Path = path;
+        Path = @"./TOH_DATA/" + path;
+    }
+
+    public StreamReader ReadText()
+    {
+        return File.OpenText(Path);
     }
 }

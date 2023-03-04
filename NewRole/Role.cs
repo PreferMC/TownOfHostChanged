@@ -24,8 +24,7 @@ public class Role
     public bool HasVision { get; set; } // 是否拥有内鬼视野
     public bool IsMadMate { get; set; } // 是否为叛徒(理论上已经开发完成)
     public List<TabGroup> SubRoleCanJoinGroups { get; } // 副职业可以被赋予职业的阵营
-    public bool GiveRoleOnStart { get; set; }
-    public Dictionary<CustomRoles, string> CustomSuffix { get; set; }
+    public bool GiveRoleOnStart { get; set; } // 是否在开始游戏时给予这个职业
 
     public Role(int id, CustomRoles role)
     {
@@ -44,7 +43,6 @@ public class Role
         HasVision = false;
         IsMadMate = false;
         GiveRoleOnStart = true;
-        CustomSuffix = new();
         SubRoleCanJoinGroups = new()
         {
             TabGroup.CrewmateRoles,
