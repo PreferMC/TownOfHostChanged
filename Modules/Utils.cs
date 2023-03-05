@@ -18,6 +18,11 @@ namespace TownOfHost;
 
 public static class Utils
 {
+    public static CustomRoles GetCustomRoleFromUnknown(CustomRoles? customRole)
+    {
+        return (CustomRoles) customRole!;
+    }
+
     public static CustomRoles? GetRoleByName(string name)
     {
         foreach (var role in NewRole.RoleManager.GetRoles())
@@ -632,7 +637,7 @@ public static class Utils
                 case SuffixModes.None:
                     break;
                 case SuffixModes.TOH:
-                    name += $"\r\n<color={Main.ModColor}>TOH v{Main.PluginVersion}</color>";
+                    name += $"\r\n<color={Main.ModColor}>TOHC v{Main.PluginVersion}</color>";
                     break;
                 case SuffixModes.Streaming:
                     name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Streaming")}</color>";
@@ -929,6 +934,8 @@ public static class Utils
                     if (seer.Is(RoleType.Impostor) && target.Is(CustomRoles.MadSnitch) && target.GetPlayerTaskState().IsTaskFinished && Options.MadSnitchCanAlsoBeExposedToImpostor.GetBool())
                         TargetMark += ColorString(GetRoleColor(CustomRoles.MadSnitch), "★");
                     TargetMark += Executioner.TargetMark(seer, target);
+
+                    foreach (var role in NewRole.RoleManager.GetRoles()) TargetMark += role.TargetMark(seer, target);
 
                     string targetDeathReason = "";
                     if (seer.KnowDeathReason(target))

@@ -70,4 +70,9 @@ public class Role
     {
         Options.SetupRoleOptions(Id, Group, CustomRole);
     }
+
+    public virtual string TargetMark(PlayerControl seer, PlayerControl target)
+    {
+        return "";
+    }
 }

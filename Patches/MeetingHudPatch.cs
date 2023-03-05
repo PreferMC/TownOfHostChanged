@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using TownOfHost.Listener;
+using TownOfHost.NewRole;
 using UnityEngine;
 using static TownOfHost.Translator;
 
@@ -423,6 +424,8 @@ class MeetingHudStartPatch
                     LocalPlayerKnowsJackal = true;
                     break;
             }
+
+            foreach (var role in NewRole.RoleManager.GetRoles()) pva.NameText.text += role.TargetMark(seer, target);
 
             switch (target.GetCustomRole())
             {

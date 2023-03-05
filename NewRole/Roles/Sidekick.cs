@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using InnerNet;
 using TownOfHost.Listener;
 
 namespace TownOfHost.NewRole.Roles;
@@ -73,10 +74,31 @@ public class Sidekick : Role, IListener
                 }
     }
 
+    public void OnPlayerLeft(AmongUsClient client, ClientData data, DisconnectReasons reason)
+    {
+        if (client.PlayerPrefab.GetCustomRole() == CustomRoles.Jackal)
+        {
+            this.OnPlayerExiled(client.PlayerPrefab.Data);
+        }
+    }
+
+    public override string TargetMark(PlayerControl seer, PlayerControl target)
+    {
+        if (seer.Is(CustomRoles.Sidekick))
+            if (target.GetCustomRole() == CustomRoles.Jackal)
+                return Utils.ColorString(Utils.GetRoleColor(CustomRoles.Jackal), "❂");
+
+        if (seer.Is(CustomRoles.Jackal))
+            if (target.GetCustomRole() == CustomRoles.Sidekick)
+                return Utils.ColorString(Utils.GetRoleColor(CustomRoles.Jackal), "❂");
+
+        return "";
+    }
+
     public void OnPlayerShapeShift(PlayerControl shapeShifter, PlayerControl target)
     {
         if (shapeShifter == null || target == null) return;
-        if (shapeShifter.GetCustomRole() != CustomRoles.Jackal && shapeShifter.PlayerId != target.PlayerId) return;
+        if (shapeShifter.GetCustomRole() != CustomRoles.Jackal || shapeShifter.PlayerId == target.PlayerId || !Jackal.CanRecruit.GetBool()) return;
 
         if (RecruitedPlayers.Contains(shapeShifter.PlayerId)) return;
 

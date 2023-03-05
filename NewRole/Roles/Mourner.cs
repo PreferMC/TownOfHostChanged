@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using TownOfHost.Listener;
 
 namespace TownOfHost.NewRole.Roles;
@@ -41,4 +41,4 @@ public class Mourner : Role, IListener
     {
         KilledPlayer.Clear();
     }
-}
+}*/

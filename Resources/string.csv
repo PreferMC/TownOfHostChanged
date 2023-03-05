@@ -334,12 +334,10 @@ PreventSBServerKick,尝试阻止来自游戏服务器的踢人事件
 KillFlashDuration,击杀闪烁持续时间
 TrueRandomeRoles,尝试真随机分配职业（试验性）
 ConfirmEjections,驱逐时确认阵营
-ConfirmEjectionsNK,确认带刀中立阵营
-ConfirmEjectionsNonNK,确认无刀中立阵营
-ConfirmEjectionsNKAsImp,确认时中立阵营视作内鬼阵营
 ConfirmEjectionsRoles,驱逐时确认具体职业
 ShowImpRemainOnEject,驱逐时显示剩余内鬼
 ShowNKRemainOnEject,同时显示剩余中立
+SpecifyRole,指定房主开局职业
 
 ## 模式说明
 HideAndSeekInfo,躲猫猫:\n没有会议阶段；船员只能完成任务；\n内鬼需要杀死所有船员来获得胜利；\n内鬼的皮肤颜色将变为红色，船员变为蓝色，以示区分。
@@ -356,6 +354,7 @@ KillCooldown,击杀冷却时间
 CanVent,可以使用通风管道
 ImpostorVision,拥有内鬼视野
 CanUseSabotage,可以破坏
+CanRecruit,可以招募跟班
 CanCreateMadmate,可以指名叛徒
 ImpKnowAlliesRole,内鬼知道队友的职业
 WarlockCanKillAllies,可以击杀队友
@@ -656,3 +655,5 @@ NoImpRemain,已经没有内鬼啦
 ImpRemain,剩余 {0} 个内鬼
 NeutralRemain,剩余 {0} 个邪恶中立
 IsGood,{0} 是个好人，真的
+
+No,无

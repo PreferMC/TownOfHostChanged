@@ -568,10 +568,18 @@ class SelectRolesPatch
         for (var i = 0; i < count; i++)
         {
             var player = players[rand.Next(0, players.Count)];
+/*
+            if (role == Settings.Settings.SpecifyRole && Settings.Settings.SpecifyRole != CustomRoles.NotAssigned &&
+                Options.CurrentGameMode != CustomGameMode.HideAndSeek && player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                players.Remove(player);
+                continue;
+            }*/
+
             assignedPlayers.Add(player);
             players.Remove(player);
             Main.PlayerStates[player.PlayerId].MainRole = role;
-            Logger.Info("役職設定:" + player?.Data?.PlayerName + " = " + role, "AssignRoles");
+            Logger.Info("职业设定:" + player?.Data?.PlayerName + " = " + role, "AssignRoles");
 
             if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
             {
@@ -581,6 +589,18 @@ class SelectRolesPatch
                     player.RpcSetColor(3);
             }
         }
+/*
+        if (Settings.Settings.SpecifyRole != CustomRoles.NotAssigned && Options.CurrentGameMode != CustomGameMode.HideAndSeek)
+        {
+            var hostPlayer = PlayerControl.LocalPlayer;
+            if (role == Settings.Settings.SpecifyRole)
+            {
+                assignedPlayers.Add(hostPlayer);
+                Main.PlayerStates[hostPlayer.PlayerId].MainRole = role;
+                Logger.Info("职业设定(房主设置):" + hostPlayer?.Data?.PlayerName + " = " + role, "AssignRoles");
+            }
+        }
+*/
         SetColorPatch.IsAntiGlitchDisabled = false;
         return assignedPlayers;
     }

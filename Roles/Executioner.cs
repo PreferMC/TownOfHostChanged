@@ -23,11 +23,11 @@ namespace TownOfHost
         public static Dictionary<byte, byte> Target = new();
         public static readonly string[] ChangeRoles =
         {
-            CustomRoles.Crewmate.ToString(), CustomRoles.Jester.ToString(), CustomRoles.Opportunist.ToString(),
+            CustomRoles.Crewmate.ToString(), CustomRoles.Jester.ToString(), CustomRoles.Opportunist.ToString(), CustomRoles.Amnesiac.ToString()
         };
         public static readonly CustomRoles[] CRoleChangeRoles =
         {
-            CustomRoles.Crewmate, CustomRoles.Jester, CustomRoles.Opportunist,
+            CustomRoles.Crewmate, CustomRoles.Jester, CustomRoles.Opportunist, CustomRoles.Amnesiac
         };
 
         public static void SetupCustomOption()
@@ -128,6 +128,7 @@ namespace TownOfHost
             var GetValue = Target.TryGetValue(seer.PlayerId, out var targetId);
             return GetValue && targetId == target.PlayerId ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Executioner), "♦") : "";
         }
+
         public static void CheckExileTarget(GameData.PlayerInfo exiled, bool DecidedWinner)
         {
             foreach (var kvp in Target)

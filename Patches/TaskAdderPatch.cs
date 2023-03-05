@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using TownOfHost.NewRole;
 using UnityEngine;
 
 namespace TownOfHost
@@ -48,10 +49,7 @@ namespace TownOfHost
                     TaskAddButton button = UnityEngine.Object.Instantiate<TaskAddButton>(__instance.RoleButton);
                     button.Text.text = Utils.GetRoleName(cRole);
                     __instance.AddFileAsChild(CustomRolesFolder, button, ref xCursor, ref yCursor, ref maxHeight);
-                    var roleBehaviour = new RoleBehaviour
-                    {
-                        Role = (RoleTypes)cRole + 1000
-                    };
+                    var roleBehaviour = new RoleBehaviour { Role = (RoleTypes)cRole + 1000 };
                     button.Role = roleBehaviour;
 
                     Color IconColor = Color.white;
@@ -111,6 +109,8 @@ namespace TownOfHost
             { CustomRoles.TimeThief, RoleTypes.Impostor },
             { CustomRoles.EvilTracker, RoleTypes.Shapeshifter },
         };
+
+        private static bool ValueChanged;
         public static bool Prefix(TaskAddButton __instance)
         {
             try
@@ -119,6 +119,11 @@ namespace TownOfHost
                 {
                     CustomRoles FileCustomRole = (CustomRoles)__instance.Role.Role - 1000;
                     PlayerControl.LocalPlayer.RpcSetCustomRole(FileCustomRole);
+                    if (!ValueChanged)
+                    {
+                        foreach (var role in NewRole.RoleManager.GetRoles()) RolePairs.Add(role.CustomRole, role.BaseRole);
+                        ValueChanged = true;
+                    }
                     if (!RolePairs.TryGetValue(FileCustomRole, out RoleTypes oRole)) PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
                     else PlayerControl.LocalPlayer.RpcSetRole(oRole);
                     return false;

@@ -14,7 +14,6 @@ using TownOfHost.Listener;
 using TownOfHost.Listener.Impl;
 using TownOfHost.NewRole;
 using TownOfHost.NewRole.Roles;
-using TownOfHost.Plugin;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 
@@ -38,8 +37,6 @@ public class Main : BasePlugin
     public static readonly string ForkId = "TOHC";
     // Discordボタンを表示するか / Show Discord Button (Default: true)
     public static readonly bool ShowDiscordButton = false;
-    // 文件数据目录
-    public static readonly string AppDataDir = "";
     // 在右上角文字
     public static readonly string Text =
         $"\r\n<color=#ffc0cb>随缘更新呢</color>";
@@ -59,7 +56,7 @@ public class Main : BasePlugin
 
     // ==========
     public const string PluginGuid = "space.commandf1.townofhostchanged";
-    public const string PluginVersion = "1.0.4";
+    public const string PluginVersion = "1.0.5";
     public Harmony Harmony { get; } = new(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -215,7 +212,7 @@ public class Main : BasePlugin
         new Butcher().RegisterRoleWithListener();
         new Spy().RegisterRoleWithListener();
         new Aggressor().RegisterRoleWithListener();
-        new Mourner().RegisterRoleWithListener();
+        // new Mourner().RegisterRoleWithListener();
         new Sidekick().RegisterRoleWithListener();
         new Thief().RegisterRoleWithListener();
 
@@ -313,9 +310,6 @@ public class Main : BasePlugin
 
         // load appdata
         AppDataLoader.Init();
-
-        // plugin system
-        PluginManager.InitPluginSystem();
     }
 }
 public enum CustomRoles
@@ -331,7 +325,7 @@ public enum CustomRoles
     FireWorks,
     Mafia,
     SerialKiller,
-    Mourner,
+    // Mourner,
     //ShapeMaster,
     Sniper,
     Vampire,

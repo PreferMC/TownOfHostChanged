@@ -10,6 +10,7 @@ public class Thief : Role, IListener
         Color = "#dcdcdc";
         HasTask = false;
         Group = TabGroup.NeutralRoles;
+		BaseRole = RoleTypes.Impostor;
         CanKill = true;
         CurrentKillCooldown = 25f;
         DisplayName = "小偷";

@@ -797,6 +797,8 @@ namespace TownOfHost
                             Mark += $"<color={Utils.GetRoleColorCode(CustomRoles.Arsonist)}>△</color>";
                     }
                     Mark += Executioner.TargetMark(seer, target);
+
+                    foreach (var role in NewRole.RoleManager.GetRoles()) role.TargetMark(seer, target);
                     if (seer.Is(CustomRoles.Puppeteer))
                     {
                         if (seer.Is(CustomRoles.Puppeteer) &&
